@@ -1,22 +1,73 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useCallback, useEffect, useState, startTransition } from 'react'
 import { signUpAction, SignUpFormState } from '@/lib/auth/auth-actions'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { signUpSchema, SignUpData } from '@/lib/auth/validation/sign-up-schema'
 
 const SignUpPage = () => {
-  const initialState: SignUpFormState = {
-    fields: { email: '', password: '', passwordConfirmation: '' },
+  const [state, formAction, isSubmitting] = useActionState<SignUpFormState, FormData>(
+    signUpAction,
+    { fields: { email: '', password: '' } }
+  )
+
+  const [validationErrors, setValidationErrors] = useState<SignUpFormState['errors']>(state.errors)
+
+  const { handleSubmit, register, formState, setError } = useForm<SignUpData>({
+    resolver: zodResolver(signUpSchema),
+    mode: 'onChange',
+  })
+
+  // Handle react-hook-form validation errors
+  useEffect(() => {
+    const emailError = formState.errors.email?.message
+    const passwordError = formState.errors.password?.message
+
+    setValidationErrors({
+      email: emailError ? [emailError] : undefined,
+      password: passwordError ? [passwordError] : undefined,
+    })
+  }, [formState.errors.email, formState.errors.password, formState.errors])
+
+  // Handle useActionState state errors
+  useEffect(() => {
+    Object.keys(state.errors ?? []).forEach((value) => {
+      const field = value as keyof NonNullable<SignUpFormState['errors']>
+      setError(field, { type: 'server', message: state.errors![field]![0] })
+    })
+  }, [setError, state])
+
+  const onSubmit: SubmitHandler<SignUpData> = useCallback(
+    (data) => {
+      const formData = new FormData()
+      Object.entries(data).forEach(([field, value]) => formData.append(field, value))
+      startTransition(() => formAction(formData))
+    },
+    [formAction]
+  )
+
+  const renderValidationError = (field: keyof NonNullable<SignUpFormState['errors']>) => {
+    if (!validationErrors) return
+
+    const errorMessage = validationErrors[field] ? validationErrors[field][0] : undefined
+    if (!errorMessage) return null
+
+    return (
+      <div id={`${field}-error`}>
+        <p style={{ color: 'red' }}>{errorMessage}</p>
+      </div>
+    )
   }
 
-  const [state, formAction, isPending] = useActionState<SignUpFormState, FormData>(
-    signUpAction,
-    initialState
-  )
+  const getAriaLabelBy = (field: keyof NonNullable<SignUpFormState['errors']>) => {
+    return validationErrors && validationErrors[field] ? `${field}-error` : undefined
+  }
 
   return (
     <>
       <h1>Create an account</h1>
-      <form action={formAction}>
+      <form action={formAction} onSubmit={handleSubmit(onSubmit)}>
         {/* Email */}
         <div>
           <label htmlFor="email">Email</label>
@@ -24,14 +75,14 @@ const SignUpPage = () => {
           <input
             type="email"
             id={'email'}
-            name={'email'}
             defaultValue={state.fields.email}
             placeholder={'Enter your email address'}
-            disabled={isPending}
-            aria-describedby={'email-error'}
+            disabled={isSubmitting}
+            aria-describedby={getAriaLabelBy('email')}
             autoComplete={'email'}
+            {...register('email')}
           />
-          {state.errors?.email && <p id={'email-error'}>{state.errors.email[0]}</p>}
+          {renderValidationError('email')}
         </div>
 
         {/* Password */}
@@ -41,37 +92,17 @@ const SignUpPage = () => {
           <input
             type="password"
             id={'password'}
-            name={'password'}
             defaultValue={state.fields.password}
             placeholder={'Enter your password'}
-            disabled={isPending}
-            aria-describedby={'password-error'}
+            disabled={isSubmitting}
+            aria-describedby={getAriaLabelBy('password')}
             autoComplete={'new-password'}
+            {...register('password')}
           />
-          {state.errors?.password && <p id={'password-error'}>{state.errors.password[0]}</p>}
+          {renderValidationError('password')}
         </div>
 
-        {/* Password Confirmation */}
-        <div>
-          <label htmlFor="passwordConfirmation">Confirm Password</label>
-          <br />
-          <input
-            type="password"
-            id={'passwordConfirmation'}
-            name={'passwordConfirmation'}
-            defaultValue={state.fields.passwordConfirmation}
-            placeholder={'Enter password confirmation'}
-            disabled={isPending}
-            aria-describedby={'passwordConfirmation-error'}
-            autoComplete={'new-password'}
-          />
-          {state.errors?.passwordConfirmation && (
-            <p id={'passwordConfirmation-error'}>{state.errors.passwordConfirmation[0]}</p>
-          )}
-        </div>
-        <br />
-
-        <button type={'submit'} disabled={isPending}>
+        <button type={'submit'} disabled={isSubmitting}>
           Get started
         </button>
       </form>

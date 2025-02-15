@@ -6,12 +6,10 @@ export type SignUpFormState = {
   fields: {
     email: string
     password: string
-    passwordConfirmation: string
   }
   errors?: {
     email?: string[]
     password?: string[]
-    passwordConfirmation?: string[]
   }
 }
 
@@ -20,7 +18,6 @@ async function signUpAction(_: SignUpFormState, formData: FormData): Promise<Sig
     fields: {
       email: formData.get('email'),
       password: formData.get('password'),
-      passwordConfirmation: formData.get('passwordConfirmation'),
     },
   } as SignUpFormState
 
@@ -28,6 +25,10 @@ async function signUpAction(_: SignUpFormState, formData: FormData): Promise<Sig
 
   if (!validationResult.success) {
     nextState.errors = validationResult.error.flatten().fieldErrors
+  } else {
+    nextState.errors = {
+      email: ['User already exists'],
+    }
   }
 
   // TODO: create new user, send email, redirect

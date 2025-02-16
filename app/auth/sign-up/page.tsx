@@ -1,7 +1,7 @@
 'use client'
 
 import { useActionState, useCallback, useEffect, useState, startTransition } from 'react'
-import { signUpAction, SignUpFormState } from '@/lib/auth/auth-actions'
+import { signUpAction, SignUpFormState } from '@/lib/auth/actions/sign-up-action'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signUpSchema, SignUpData } from '@/lib/auth/validation/sign-up-schema'
@@ -67,6 +67,11 @@ const SignUpPage = () => {
   return (
     <>
       <h1>Create an account</h1>
+      {state.systemError && (
+        <div>
+          <p style={{ color: 'red' }}>{state.systemError}</p>
+        </div>
+      )}
       <form action={formAction} onSubmit={handleSubmit(onSubmit)}>
         {/* Email */}
         <div>

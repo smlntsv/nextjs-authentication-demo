@@ -3,25 +3,39 @@ import { makeSha256Hash } from '@/lib/hash/sha256.edge'
 import { sql } from '@vercel/postgres'
 import { cookies } from 'next/headers'
 
+type User = {
+  id: string
+  email: string
+  createdAt: Date
+  updatedAt: Date
+}
+
 const SESSION_COOKIE_NAME = 'auth_session'
 
-async function isUserSessionValid(request: NextRequest): Promise<boolean> {
+async function isUserSessionValid(request?: NextRequest): Promise<boolean> {
+  let sessionToken: string | undefined
+
+  if (request) {
+    // Extract session token from request cookies (when called from middleware)
+    sessionToken = request.cookies.get(SESSION_COOKIE_NAME)?.value
+  } else {
+    // Extract token from server-side cookies (when called from server actions)
+    const cookieStore = await cookies()
+    sessionToken = cookieStore.get(SESSION_COOKIE_NAME)?.value
+  }
+
+  if (!sessionToken) {
+    return false
+  }
+
   try {
-    const sessionTokenCookie = request.cookies.get(SESSION_COOKIE_NAME)
-    if (!sessionTokenCookie) {
-      return false
-    }
-
-    const hashedToken = await hashSessionToken(sessionTokenCookie.value)
-
+    const hashedToken = await hashSessionToken(sessionToken)
     const queryResult = await sql`SELECT expires_at FROM sessions WHERE token = ${hashedToken};`
-
     if (queryResult.rows.length === 0) {
       return false
     }
 
     const expiresAt: Date = queryResult.rows[0].expires_at
-
     return expiresAt.getTime() > new Date().getTime()
   } catch (error) {
     console.error('Failed to check user session: ', error)
@@ -91,4 +105,50 @@ async function hashSessionToken(token: string): Promise<string> {
   return makeSha256Hash(token)
 }
 
-export { isUserSessionValid, generateSessionToken, createSessionByEmail, deleteSession }
+async function getAuthenticatedUser(): Promise<User | null> {
+  try {
+    const sessionValid = await isUserSessionValid()
+
+    if (!sessionValid) {
+      return null
+    }
+
+    const cookiesStore = await cookies()
+    const token = cookiesStore.get(SESSION_COOKIE_NAME)?.value
+    if (!token) {
+      return null
+    }
+
+    const hashedSessionToken = await hashSessionToken(token)
+
+    const userQueryResult = await sql`
+        SELECT users.id, users.email, users.created_at, users.updated_at
+        FROM users
+        JOIN sessions ON users.id = sessions.user_id
+        WHERE sessions.token = ${hashedSessionToken}
+    `
+
+    if (userQueryResult.rows.length === 0) {
+      return null
+    }
+
+    return {
+      id: userQueryResult.rows[0].id,
+      email: userQueryResult.rows[0].email,
+      createdAt: userQueryResult.rows[0].created_at,
+      updatedAt: userQueryResult.rows[0].updated_at,
+    } satisfies User
+  } catch (error) {
+    console.log('Unable to get authenticated user data: ', error)
+  }
+
+  return null
+}
+
+export {
+  isUserSessionValid,
+  generateSessionToken,
+  createSessionByEmail,
+  deleteSession,
+  getAuthenticatedUser,
+}

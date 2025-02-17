@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres'
-import { makeBcryptHash } from '@/lib/hash/bcrypt.node'
+import { makeBcryptHash, verifyBcryptHash } from '@/lib/hash/bcrypt.node'
 import { makeSha256Hash } from '@/lib/hash/sha256.edge'
 
 async function isUserRegisteredByEmail(email: string): Promise<boolean> {
@@ -9,6 +9,23 @@ async function isUserRegisteredByEmail(email: string): Promise<boolean> {
   } catch (error) {
     console.error('Error checking user registration: ', error)
     throw new Error('Unable to check user registration status.')
+  }
+}
+
+async function isUserPasswordValid(email: string, password: string): Promise<boolean> {
+  try {
+    const userQueryResult = await sql`SELECT password FROM users WHERE email = ${email};`
+
+    if (userQueryResult.rowCount === 0) {
+      return false
+    }
+
+    const hashedPassword = userQueryResult.rows[0].password
+
+    return verifyUserPassword(password, hashedPassword)
+  } catch (error) {
+    console.error('Unable to validate user password: ', error)
+    throw new Error('Unable to validate user password.')
   }
 }
 
@@ -118,6 +135,10 @@ async function hashUserPassword(password: string): Promise<string> {
   return makeBcryptHash(password)
 }
 
+async function verifyUserPassword(password: string, hashedPassword: string): Promise<boolean> {
+  return verifyBcryptHash(password, hashedPassword)
+}
+
 async function generateEmailConfirmationToken(): Promise<{ token: string; hashedToken: string }> {
   const token = crypto.randomUUID()
   const hashedToken = await hashEmailConfirmationToken(token)
@@ -181,4 +202,5 @@ export {
   processResendConfirmationEmail,
   isEmailConfirmationTokenValid,
   completeSignUpProcess,
+  isUserPasswordValid,
 }

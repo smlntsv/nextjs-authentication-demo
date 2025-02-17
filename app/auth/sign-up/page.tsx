@@ -67,9 +67,9 @@ const SignUpPage = () => {
   return (
     <>
       <h1>Create an account</h1>
-      {state.systemError && (
+      {state.globalError && (
         <div>
-          <p style={{ color: 'red' }}>{state.systemError}</p>
+          <p style={{ color: 'red' }}>{state.globalError}</p>
         </div>
       )}
       <form action={formAction} onSubmit={handleSubmit(onSubmit)}>

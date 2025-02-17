@@ -14,7 +14,7 @@ export type SignUpFormState = {
     email?: string[]
     password?: string[]
   }
-  systemError?: string
+  globalError?: string
 }
 
 async function signUpAction(_: SignUpFormState, formData: FormData): Promise<SignUpFormState> {
@@ -46,7 +46,7 @@ async function signUpAction(_: SignUpFormState, formData: FormData): Promise<Sig
     await processPendingUserSignUp(email, password)
   } catch (error) {
     console.error('Error during sign-up process:', error)
-    nextState.systemError = 'An unexpected error occurred. Please try again later.'
+    nextState.globalError = 'An unexpected error occurred. Please try again later.'
 
     return nextState
   }

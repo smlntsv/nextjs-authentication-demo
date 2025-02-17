@@ -100,15 +100,78 @@ async function updatePendingUserTokenByEmail(email: string, hashedToken: string)
   }
 }
 
+async function isEmailConfirmationTokenValid(plainToken: string): Promise<boolean> {
+  try {
+    const hashedToken = await hashEmailConfirmationToken(plainToken)
+
+    const queryResult =
+      await sql`SELECT * FROM pending_users WHERE token = ${hashedToken} AND expires_at > NOW();`
+
+    return queryResult.rows.length > 0
+  } catch (error) {
+    console.error('Unable to verify email confirmation token: ', error)
+    throw new Error('Unable to verify email confirmation token.')
+  }
+}
+
 async function hashUserPassword(password: string): Promise<string> {
   return makeBcryptHash(password)
 }
 
 async function generateEmailConfirmationToken(): Promise<{ token: string; hashedToken: string }> {
   const token = crypto.randomUUID()
-  const hashedToken = await makeSha256Hash(token)
+  const hashedToken = await hashEmailConfirmationToken(token)
 
   return { token, hashedToken }
+}
+
+async function hashEmailConfirmationToken(token: string): Promise<string> {
+  return await makeSha256Hash(token)
+}
+
+async function completeSignUpProcess(token: string): Promise<boolean> {
+  try {
+    const hashedToken = await hashEmailConfirmationToken(token)
+
+    const pendingUsersQueryResult =
+      await sql`SELECT email, password, created_at FROM pending_users WHERE token = ${hashedToken};`
+
+    if (pendingUsersQueryResult.rowCount === 0) {
+      console.error('No pending user found for provided token.')
+      return false
+    }
+
+    const { email, password, created_at } = pendingUsersQueryResult.rows[0]
+    const userId = crypto.randomUUID()
+
+    const usersQueryResult = await sql`
+        INSERT INTO users (id, email, password, created_at, updated_at)
+        VALUES (${userId}, ${email}, ${password}, ${created_at}, NOW())
+        RETURNING id;
+    `
+
+    if (usersQueryResult.rowCount === 0) {
+      console.error('Failed to insert new user into users table.')
+      return false
+    }
+
+    const deletePendingUserQueryResult =
+      await sql`DELETE FROM pending_users WHERE token = ${hashedToken};`
+
+    if (deletePendingUserQueryResult.rowCount === 0) {
+      console.error('Failed to delete pending user record.')
+      return false
+    }
+
+    // TODO: send email
+    // sendEmailConfirmedEmail(email)
+
+    return true
+  } catch (error) {
+    console.error('Unable to complete user registration process: ', error)
+  }
+
+  return false
 }
 
 export {
@@ -116,4 +179,6 @@ export {
   processPendingUserSignUp,
   isPendingUserExistsByEmail,
   processResendConfirmationEmail,
+  isEmailConfirmationTokenValid,
+  completeSignUpProcess,
 }

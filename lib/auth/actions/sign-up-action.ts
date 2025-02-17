@@ -1,7 +1,7 @@
 'use server'
 
 import 'server-only'
-import { signUpSchema } from '@/lib/auth/validation/sign-up-schema'
+import { emailPasswordSchema } from '@/lib/auth/validation/email-password-schema'
 import { redirect } from 'next/navigation'
 import { isUserRegisteredByEmail, processPendingUserSignUp } from '@/lib/auth/utils/auth-utils'
 
@@ -26,7 +26,7 @@ async function signUpAction(_: SignUpFormState, formData: FormData): Promise<Sig
   } as SignUpFormState
 
   // Validate input
-  const validationResult = signUpSchema.safeParse(nextState.fields)
+  const validationResult = emailPasswordSchema.safeParse(nextState.fields)
 
   if (!validationResult.success) {
     nextState.errors = validationResult.error.flatten().fieldErrors

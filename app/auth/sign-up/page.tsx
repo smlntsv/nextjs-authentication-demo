@@ -4,7 +4,7 @@ import { useActionState, useCallback, useEffect, useState, startTransition } fro
 import { signUpAction, SignUpFormState } from '@/lib/auth/actions/sign-up-action'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { signUpSchema, SignUpData } from '@/lib/auth/validation/sign-up-schema'
+import { emailPasswordSchema, EmailPassword } from '@/lib/auth/validation/email-password-schema'
 
 const SignUpPage = () => {
   const [state, formAction, isSubmitting] = useActionState<SignUpFormState, FormData>(
@@ -14,8 +14,8 @@ const SignUpPage = () => {
 
   const [validationErrors, setValidationErrors] = useState<SignUpFormState['errors']>(state.errors)
 
-  const { handleSubmit, register, formState, setError } = useForm<SignUpData>({
-    resolver: zodResolver(signUpSchema),
+  const { handleSubmit, register, formState, setError } = useForm<EmailPassword>({
+    resolver: zodResolver(emailPasswordSchema),
     mode: 'onChange',
   })
 
@@ -38,7 +38,7 @@ const SignUpPage = () => {
     })
   }, [setError, state])
 
-  const onSubmit: SubmitHandler<SignUpData> = useCallback(
+  const onSubmit: SubmitHandler<EmailPassword> = useCallback(
     (data) => {
       const formData = new FormData()
       Object.entries(data).forEach(([field, value]) => formData.append(field, value))

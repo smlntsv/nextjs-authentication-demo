@@ -16,6 +16,14 @@ export async function middleware(request: NextRequest) {
   if (!isUserAuthenticated && protectedRoutes.some((route) => nextPathname.startsWith(route))) {
     return NextResponse.redirect(new URL('/auth/sign-in', request.url))
   }
+
+  // Redirect outside the /auth/sign-up/confirmation-awaiting if email query param is not provided
+  if (
+    nextPathname.startsWith('/auth/sign-up/confirmation-awaiting') &&
+    !request.nextUrl.searchParams.has('email')
+  ) {
+    return NextResponse.rewrite(new URL('/not-found', request.url))
+  }
 }
 
 export const config = {

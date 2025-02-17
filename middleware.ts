@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse, MiddlewareConfig } from 'next/server'
+import { isUserSessionValid } from '@/lib/auth/session'
 
 const protectedRoutes = ['/dashboard']
 
 export async function middleware(request: NextRequest) {
-  // TODO: replace with actual authentication check
-  const isUserAuthenticated = false
+  const isUserAuthenticated = await isUserSessionValid(request)
   const nextPathname = request.nextUrl.pathname
 
   // Redirect authenticated users trying to access /auth/* routes to /dashboard

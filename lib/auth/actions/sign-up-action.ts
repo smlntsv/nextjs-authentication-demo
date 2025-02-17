@@ -4,26 +4,15 @@ import 'server-only'
 import { emailPasswordSchema } from '@/lib/auth/validation/email-password-schema'
 import { redirect } from 'next/navigation'
 import { isUserRegisteredByEmail, processPendingUserSignUp } from '@/lib/auth/utils/auth-utils'
+import { AuthFormState } from '@/app/auth/auth-form'
 
-export type SignUpFormState = {
-  fields: {
-    email: string
-    password: string
-  }
-  errors?: {
-    email?: string[]
-    password?: string[]
-  }
-  globalError?: string
-}
-
-async function signUpAction(_: SignUpFormState, formData: FormData): Promise<SignUpFormState> {
+async function signUpAction(_: AuthFormState, formData: FormData): Promise<AuthFormState> {
   const nextState = {
     fields: {
       email: formData.get('email'),
       password: formData.get('password'),
     },
-  } as SignUpFormState
+  } as AuthFormState
 
   // Validate input
   const validationResult = emailPasswordSchema.safeParse(nextState.fields)

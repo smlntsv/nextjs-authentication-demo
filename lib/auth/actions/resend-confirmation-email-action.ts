@@ -1,7 +1,7 @@
 'use server'
 
 import 'server-only'
-import { emailPasswordSchema } from '@/lib/auth/validation/email-password-schema'
+import { emailSchema } from '@/lib/auth/validation/email-schema'
 import {
   isPendingUserExistsByEmail,
   processResendConfirmationEmail,
@@ -30,7 +30,6 @@ async function resendConfirmationEmailAction(
   formData: FormData
 ): Promise<ResendConfirmationEmailFormState> {
   const nextState: ResendConfirmationEmailFormState = {}
-  const emailSchema = emailPasswordSchema.pick({ email: true })
   const validationResult = emailSchema.safeParse(Object.fromEntries(formData))
 
   if (!validationResult.success) {

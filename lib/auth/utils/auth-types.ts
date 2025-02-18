@@ -5,4 +5,13 @@ type User = {
   updatedAt: Date
 }
 
-export type { User }
+type PasswordReset = {
+  userId: string
+  token: string
+  isUsed: boolean
+  expiresAt: Date
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type { User, PasswordReset }

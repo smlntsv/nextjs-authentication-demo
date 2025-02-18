@@ -77,7 +77,7 @@ async function requestPasswordResetLinkAction(
     // TODO: send password reset email (email, plain password reset token)
     nextState.emailSent = true
   } catch (error) {
-    console.log('Request password reset link action failed: ', error)
+    console.error('Request password reset link action failed: ', error)
     nextState.globalError = 'An unexpected error occurred. Please try again later.'
 
     return nextState

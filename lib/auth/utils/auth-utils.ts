@@ -1,7 +1,7 @@
 import { sql } from '@vercel/postgres'
 import { makeBcryptHash, verifyBcryptHash } from '@/lib/hash/bcrypt.node'
 import { makeSha256Hash } from '@/lib/hash/sha256.edge'
-import { User } from '@/lib/auth/utils/auth-types'
+import { PasswordReset, User } from '@/lib/auth/utils/auth-types'
 
 async function isUserRegisteredByEmail(email: string): Promise<boolean> {
   try {
@@ -218,6 +218,28 @@ async function getUserByEmail(email: string): Promise<User | null> {
   }
 }
 
+async function getUserById(userId: string): Promise<User | null> {
+  try {
+    const userQueryResult = await sql`
+        SELECT id, email, created_at, updated_at FROM users WHERE id = ${userId};
+    `
+
+    if (userQueryResult.rows.length === 0) {
+      return null
+    }
+
+    return {
+      id: userQueryResult.rows[0].id,
+      email: userQueryResult.rows[0].email,
+      createdAt: userQueryResult.rows[0].created_at,
+      updatedAt: userQueryResult.rows[0].updated_at,
+    } satisfies User
+  } catch (error) {
+    console.error('Unable to get user by id: ', (error as Error).message)
+    throw new Error('Unable to get user by id')
+  }
+}
+
 async function processPasswordResetLinkRequest(userId: User['id']): Promise<void> {
   const { token, hashedToken } = await generatePasswordResetToken()
 
@@ -274,6 +296,89 @@ async function isPasswordResetTokenValid(token: string): Promise<boolean> {
   }
 }
 
+async function getPasswordResetRecord(token: string): Promise<PasswordReset | null> {
+  try {
+    const hashedToken = await hashPasswordResetToken(token)
+
+    const queryResult = await sql`
+        SELECT user_id, token, is_used, expires_at, created_at, updated_at 
+        FROM password_resets
+        WHERE token = ${hashedToken};
+    `
+
+    if (queryResult.rows.length === 0) {
+      return null
+    }
+
+    return {
+      userId: queryResult.rows[0].user_id,
+      token: queryResult.rows[0].token,
+      isUsed: queryResult.rows[0].is_used,
+      expiresAt: queryResult.rows[0].expires_at,
+      createdAt: queryResult.rows[0].created_at,
+      updatedAt: queryResult.rows[0].updated_at,
+    } as PasswordReset
+  } catch (error) {
+    console.error('Failed to get password reset record: ', error)
+    throw new Error('Failed to get password reset record')
+  }
+}
+
+async function markPasswordResetTokenAsUsed(token: string): Promise<void> {
+  let isUpdated = false
+
+  try {
+    const hashedToken = await hashPasswordResetToken(token)
+
+    const queryResult = await sql`
+        UPDATE password_resets
+        SET is_used = TRUE
+        WHERE token = ${hashedToken}
+        RETURNING is_used;
+    `
+
+    isUpdated = queryResult.rows.length > 0
+  } catch (error) {
+    console.error((error as Error).message)
+    throw new Error('Failed to mark password reset token as used.')
+  }
+
+  if (!isUpdated) {
+    throw new Error('Password reset token not found.')
+  }
+}
+
+async function updateUserPassword(userId: User['id'], newPassword: string): Promise<boolean> {
+  try {
+    const hashedPassword = await hashUserPassword(newPassword)
+    const queryResult = await sql`
+        UPDATE users SET password = ${hashedPassword} WHERE id = ${userId}
+        RETURNING id;`
+
+    return queryResult.rows.length > 0
+  } catch (error) {
+    console.error('Failed to update user password: ', error)
+    throw new Error('Failed to update user password.')
+  }
+}
+
+async function updatePasswordAndFetchEmail(
+  userId: User['id'],
+  newPassword: string
+): Promise<User['email']> {
+  const passwordUpdated = await updateUserPassword(userId, newPassword)
+  if (!passwordUpdated) {
+    throw new Error('Failed to set new password. Contact support.')
+  }
+
+  const user = await getUserById(userId)
+  if (!user) {
+    throw new Error('Failed to get user.')
+  }
+
+  return user.email
+}
+
 export {
   isUserRegisteredByEmail,
   processPendingUserSignUp,
@@ -285,4 +390,9 @@ export {
   getUserByEmail,
   processPasswordResetLinkRequest,
   isPasswordResetTokenValid,
+  getPasswordResetRecord,
+  updateUserPassword,
+  getUserById,
+  updatePasswordAndFetchEmail,
+  markPasswordResetTokenAsUsed,
 }

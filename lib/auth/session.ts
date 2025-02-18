@@ -133,7 +133,7 @@ async function getAuthenticatedUser(): Promise<User | null> {
       updatedAt: userQueryResult.rows[0].updated_at,
     } satisfies User
   } catch (error) {
-    console.log('Unable to get authenticated user data: ', error)
+    console.error('Unable to get authenticated user data: ', error)
   }
 
   return null

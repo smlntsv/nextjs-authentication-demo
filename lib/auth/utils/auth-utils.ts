@@ -1,6 +1,7 @@
 import { sql } from '@vercel/postgres'
 import { makeBcryptHash, verifyBcryptHash } from '@/lib/hash/bcrypt.node'
 import { makeSha256Hash } from '@/lib/hash/sha256.edge'
+import { User } from '@/lib/auth/utils/auth-types'
 
 async function isUserRegisteredByEmail(email: string): Promise<boolean> {
   try {
@@ -47,7 +48,7 @@ async function processPendingUserSignUp(email: string, password: string): Promis
 
   const emailConfirmationURL = new URL(
     `/auth/sign-up/confirm-email/${emailConfirmationToken}`,
-    process.env.FRONTEND_URL
+    process.env.FRONTEND_BASE_URL
   )
 
   console.log(
@@ -66,7 +67,7 @@ async function processResendConfirmationEmail(email: string): Promise<void> {
 
   const emailConfirmationURL = new URL(
     `/auth/sign-up/confirm-email/${emailConfirmationToken}`,
-    process.env.FRONTEND_URL
+    process.env.FRONTEND_BASE_URL
   )
 
   console.log(
@@ -122,7 +123,7 @@ async function isEmailConfirmationTokenValid(plainToken: string): Promise<boolea
     const hashedToken = await hashEmailConfirmationToken(plainToken)
 
     const queryResult =
-      await sql`SELECT * FROM pending_users WHERE token = ${hashedToken} AND expires_at > NOW();`
+      await sql`SELECT token FROM pending_users WHERE token = ${hashedToken} AND expires_at > NOW();`
 
     return queryResult.rows.length > 0
   } catch (error) {
@@ -195,6 +196,84 @@ async function completeSignUpProcess(token: string): Promise<boolean> {
   return false
 }
 
+async function getUserByEmail(email: string): Promise<User | null> {
+  try {
+    const userQueryResult = await sql`
+        SELECT id, email, created_at, updated_at FROM users WHERE email = ${email};
+    `
+
+    if (userQueryResult.rows.length === 0) {
+      return null
+    }
+
+    return {
+      id: userQueryResult.rows[0].id,
+      email: userQueryResult.rows[0].email,
+      createdAt: userQueryResult.rows[0].created_at,
+      updatedAt: userQueryResult.rows[0].updated_at,
+    } satisfies User
+  } catch (error) {
+    console.error('Unable to get user by email: ', (error as Error).message)
+    throw new Error('Unable to get user by email')
+  }
+}
+
+async function processPasswordResetLinkRequest(userId: User['id']): Promise<void> {
+  const { token, hashedToken } = await generatePasswordResetToken()
+
+  await createPasswordResetRecord(userId, hashedToken)
+
+  const passwordResetURL = new URL(`/auth/password-reset/${token}`, process.env.FRONTEND_BASE_URL)
+
+  console.log('Password reset link created. URL:', passwordResetURL.toString())
+
+  // TODO: send email
+  // sendPasswordResetLinkEmail(email, passwordResetURL)
+}
+
+async function createPasswordResetRecord(userId: User['id'], hashedToken: string): Promise<void> {
+  try {
+    const queryResult = await sql`
+        INSERT INTO password_resets (user_id, token, is_used, expires_at, created_at, updated_at)
+        VALUES (${userId}, ${hashedToken}, FALSE, NOW() + INTERVAL '1 hour', NOW(), NOW());
+    `
+
+    if (queryResult.rowCount !== 0) {
+      return
+    }
+  } catch (error) {
+    console.error('Error during password_resets record creating: ', error)
+  }
+
+  throw new Error('Failed to create password reset record.')
+}
+
+async function generatePasswordResetToken(): Promise<{ token: string; hashedToken: string }> {
+  const token = crypto.randomUUID()
+  const hashedToken = await hashPasswordResetToken(token)
+  return { token, hashedToken }
+}
+
+async function hashPasswordResetToken(token: string): Promise<string> {
+  return makeSha256Hash(token)
+}
+
+async function isPasswordResetTokenValid(token: string): Promise<boolean> {
+  try {
+    const hashedToken = await hashPasswordResetToken(token)
+
+    const queryResult = await sql`
+        SELECT user_id FROM password_resets
+        WHERE token = ${hashedToken} AND is_used = FALSE AND expires_at > NOW();
+    `
+
+    return queryResult.rows.length > 0
+  } catch (error) {
+    console.error('Unable to verify password reset token: ', error)
+    throw new Error('Failed to verify password reset token.')
+  }
+}
+
 export {
   isUserRegisteredByEmail,
   processPendingUserSignUp,
@@ -203,4 +282,7 @@ export {
   isEmailConfirmationTokenValid,
   completeSignUpProcess,
   isUserPasswordValid,
+  getUserByEmail,
+  processPasswordResetLinkRequest,
+  isPasswordResetTokenValid,
 }

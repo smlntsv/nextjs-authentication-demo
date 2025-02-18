@@ -1,5 +1,7 @@
+import { PasswordResetForm } from '@/app/auth/password-reset/password-reset-form'
+
 const PasswordResetPage = () => {
-  return <div>Password Reset Page</div>
+  return <PasswordResetForm />
 }
 
 export default PasswordResetPage

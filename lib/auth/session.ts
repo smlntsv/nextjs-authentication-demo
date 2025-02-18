@@ -2,13 +2,7 @@ import { NextRequest } from 'next/server'
 import { makeSha256Hash } from '@/lib/hash/sha256.edge'
 import { sql } from '@vercel/postgres'
 import { cookies } from 'next/headers'
-
-type User = {
-  id: string
-  email: string
-  createdAt: Date
-  updatedAt: Date
-}
+import { User } from '@/lib/auth/utils/auth-types'
 
 const SESSION_COOKIE_NAME = 'auth_session'
 

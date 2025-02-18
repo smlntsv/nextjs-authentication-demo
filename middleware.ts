@@ -2,6 +2,11 @@ import { NextRequest, NextResponse, MiddlewareConfig } from 'next/server'
 import { isUserSessionValid } from '@/lib/auth/session'
 
 const protectedRoutes = ['/dashboard']
+const requiresEmailQueryParamRoutes = [
+  '/auth/sign-up/confirmation-awaiting',
+  '/auth/password-reset/confirmation',
+  '/auth/password-reset/success',
+]
 
 export async function middleware(request: NextRequest) {
   const isUserAuthenticated = await isUserSessionValid(request)
@@ -17,9 +22,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/auth/sign-in', request.url))
   }
 
-  // Redirect outside the /auth/sign-up/confirmation-awaiting if email query param is not provided
+  // Redirect to /not-found if the route requires an 'email' query param and it is missing
   if (
-    nextPathname.startsWith('/auth/sign-up/confirmation-awaiting') &&
+    requiresEmailQueryParamRoutes.some((route) => nextPathname.startsWith(route)) &&
     !request.nextUrl.searchParams.has('email')
   ) {
     return NextResponse.rewrite(new URL('/not-found', request.url))

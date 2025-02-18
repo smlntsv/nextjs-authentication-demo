@@ -4,7 +4,7 @@ import 'server-only'
 import { createRateLimiter } from '@/lib/rate-limiter'
 import { getUserByEmail, processPasswordResetLinkRequest } from '@/lib/auth/utils/auth-utils'
 import { redirect } from 'next/navigation'
-import { emailSchema } from '@/lib/auth/validation/email-schema'
+import { requestPasswordResetSchema } from '@/lib/auth/validation/request-password-reset-schema'
 
 const checkRequestPasswordResetRateLimiter = createRateLimiter({
   points: 1,
@@ -14,6 +14,7 @@ const checkRequestPasswordResetRateLimiter = createRateLimiter({
 export type RequestPasswordResetLinkState = {
   fields: {
     email: string
+    redirect: 'true' | 'false'
   }
   errors?: {
     email?: string[]
@@ -23,6 +24,7 @@ export type RequestPasswordResetLinkState = {
     secondsRemaining: number
   }
   globalError?: string
+  emailSent?: boolean
 }
 
 async function requestPasswordResetLinkAction(
@@ -32,11 +34,12 @@ async function requestPasswordResetLinkAction(
   const nextState = {
     fields: {
       email: formData.get('email'),
+      redirect: formData.get('redirect'),
     },
   } as RequestPasswordResetLinkState
 
   // Basic validation
-  const validationResult = emailSchema.safeParse(nextState.fields)
+  const validationResult = requestPasswordResetSchema.safeParse(nextState.fields)
 
   if (!validationResult.success) {
     nextState.errors = validationResult.error.flatten().fieldErrors
@@ -44,6 +47,7 @@ async function requestPasswordResetLinkAction(
   }
 
   const email = validationResult.data.email
+  const doRedirect = validationResult.data.redirect === 'true'
 
   try {
     // Get user
@@ -71,6 +75,7 @@ async function requestPasswordResetLinkAction(
     await processPasswordResetLinkRequest(user.id)
 
     // TODO: send password reset email (email, plain password reset token)
+    nextState.emailSent = true
   } catch (error) {
     console.log('Request password reset link action failed: ', error)
     nextState.globalError = 'An unexpected error occurred. Please try again later.'
@@ -78,7 +83,11 @@ async function requestPasswordResetLinkAction(
     return nextState
   }
 
-  redirect(`/auth/password-reset/confirmation?email=${email}`)
+  if (doRedirect) {
+    redirect(`/auth/password-reset/confirmation?email=${email}`)
+  }
+
+  return nextState
 }
 
 export { requestPasswordResetLinkAction }

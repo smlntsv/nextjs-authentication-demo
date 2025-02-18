@@ -6,13 +6,16 @@ import {
 } from '@/lib/auth/actions/request-password-reset-link-action'
 import { startTransition, useActionState, useCallback, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Email, emailSchema } from '@/lib/auth/validation/email-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useCountdown } from '@/lib/hooks/use-countdown'
+import {
+  RequestPasswordResetData,
+  requestPasswordResetSchema,
+} from '@/lib/auth/validation/request-password-reset-schema'
 
 const PasswordResetForm = () => {
-  const initialState: RequestPasswordResetLinkState = { fields: { email: '' } }
+  const initialState: RequestPasswordResetLinkState = { fields: { email: '', redirect: 'true' } }
   const [state, formAction, isSubmitting] = useActionState<RequestPasswordResetLinkState, FormData>(
     requestPasswordResetLinkAction,
     initialState
@@ -22,8 +25,8 @@ const PasswordResetForm = () => {
     state.errors
   )
 
-  const { handleSubmit, register, formState, setError } = useForm<Email>({
-    resolver: zodResolver(emailSchema),
+  const { handleSubmit, register, formState, setError } = useForm<RequestPasswordResetData>({
+    resolver: zodResolver(requestPasswordResetSchema),
     mode: 'onChange',
   })
 
@@ -46,7 +49,7 @@ const PasswordResetForm = () => {
     })
   }, [setError, state])
 
-  const onSubmit: SubmitHandler<Email> = useCallback(
+  const onSubmit: SubmitHandler<RequestPasswordResetData> = useCallback(
     (data) => {
       const formData = new FormData()
       Object.entries(data).forEach(([field, value]) => formData.append(field, value))
@@ -100,6 +103,8 @@ const PasswordResetForm = () => {
           />
           {renderValidationError('email')}
         </div>
+
+        <input type={'hidden'} value={'true'} {...register('redirect')} />
 
         {/* Submit Button */}
         <button type="submit" disabled={isSubmitting}>

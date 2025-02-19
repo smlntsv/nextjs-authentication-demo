@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse, MiddlewareConfig } from 'next/server'
 import { isUserSessionValid } from '@/lib/auth/session'
 
+const isProduction = process.env.NODE_ENV === 'production'
 const protectedRoutes = ['/dashboard']
 const requiresEmailQueryParamRoutes = [
   '/auth/sign-up/confirmation-awaiting',
@@ -27,6 +28,11 @@ export async function middleware(request: NextRequest) {
     requiresEmailQueryParamRoutes.some((route) => nextPathname.startsWith(route)) &&
     !request.nextUrl.searchParams.has('email')
   ) {
+    return NextResponse.rewrite(new URL('/not-found', request.url))
+  }
+
+  // Block access to dev-only routes (like email templates preview) in production
+  if (nextPathname.startsWith('/dev') && isProduction) {
     return NextResponse.rewrite(new URL('/not-found', request.url))
   }
 }

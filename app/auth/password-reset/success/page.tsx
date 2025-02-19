@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const PasswordResetSuccess = () => (
+const PasswordResetSuccessPage = () => (
   <div>
     <h1>Password Reset</h1>
     <p>Your password has been successfully reset.</p>
@@ -10,4 +10,4 @@ const PasswordResetSuccess = () => (
   </div>
 )
 
-export default PasswordResetSuccess
+export default PasswordResetSuccessPage

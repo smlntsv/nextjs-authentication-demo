@@ -72,9 +72,8 @@ async function requestPasswordResetLinkAction(
     }
 
     // Create and store password reset token and send email
-    await processPasswordResetLinkRequest(user.id)
+    await processPasswordResetLinkRequest(user)
 
-    // TODO: send password reset email (email, plain password reset token)
     nextState.emailSent = true
   } catch (error) {
     console.error('Request password reset link action failed: ', error)

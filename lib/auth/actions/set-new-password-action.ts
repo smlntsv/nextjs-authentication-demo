@@ -8,6 +8,7 @@ import {
   markPasswordResetTokenAsUsed,
   updatePasswordAndFetchEmail,
 } from '@/lib/auth/utils/auth-utils'
+import { sendPasswordResetSuccessEmail } from '@/lib/emails/send-password-reset-success-email'
 
 export type SetNewPasswordState = {
   fields: {
@@ -59,7 +60,10 @@ async function setNewPasswordAction(
   try {
     email = await updatePasswordAndFetchEmail(passwordResetRecord.userId, password)
     await markPasswordResetTokenAsUsed(passwordResetToken)
-    // TODO: send email
+
+    // TODO: refactor
+    const signInURL = new URL('/auth/sign-in', process.env.FRONTEND_BASE_URL)
+    await sendPasswordResetSuccessEmail(email, signInURL.toString())
   } catch (error) {
     console.error('Failed to set new password: ', error)
     nextState.globalError = 'An unexpected error occurred. Please try again later.'

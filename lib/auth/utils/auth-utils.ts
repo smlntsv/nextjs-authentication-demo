@@ -2,6 +2,9 @@ import { sql } from '@vercel/postgres'
 import { makeBcryptHash, verifyBcryptHash } from '@/lib/hash/bcrypt.node'
 import { makeSha256Hash } from '@/lib/hash/sha256.edge'
 import { PasswordReset, User } from '@/lib/auth/utils/auth-types'
+import { sendConfirmEmail } from '@/lib/emails/send-confirm-email'
+import { sendEmailConfirmedEmail } from '@/lib/emails/send-email-confirmed-email'
+import { sendPasswordResetRequestEmail } from '@/lib/emails/send-password-reset-request-email'
 
 async function isUserRegisteredByEmail(email: string): Promise<boolean> {
   try {
@@ -56,8 +59,7 @@ async function processPendingUserSignUp(email: string, password: string): Promis
     emailConfirmationURL.toString()
   )
 
-  // TODO: send email
-  // sendConfirmationEmail(email, emailConfirmationURL)
+  await sendConfirmEmail(email, emailConfirmationURL.toString())
 }
 
 async function processResendConfirmationEmail(email: string): Promise<void> {
@@ -75,8 +77,7 @@ async function processResendConfirmationEmail(email: string): Promise<void> {
     emailConfirmationURL.toString()
   )
 
-  // TODO: send email
-  // sendConfirmationEmail(email, emailConfirmationURL)
+  await sendConfirmEmail(email, emailConfirmationURL.toString())
 }
 
 async function upsertPendingUserRecord(
@@ -87,7 +88,7 @@ async function upsertPendingUserRecord(
   try {
     await sql`
         INSERT INTO pending_users (email, password, token, expires_at, created_at, updated_at)
-        VALUES (${email}, ${hashedPassword}, ${hashedToken}, NOW() + INTERVAL '1 day', NOW(), NOW())
+        VALUES (${email}, ${hashedPassword}, ${hashedToken}, NOW() + INTERVAL '1 hour', NOW(), NOW())
         ON CONFLICT (email)
         DO UPDATE SET password = EXCLUDED.password, token = EXCLUDED.token, expires_at = EXCLUDED.expires_at, updated_at = NOW();`
   } catch (error) {
@@ -102,7 +103,7 @@ async function updatePendingUserTokenByEmail(email: string, hashedToken: string)
   try {
     const queryResult = await sql`
       UPDATE pending_users 
-      SET token = ${hashedToken}, expires_at = NOW() + INTERVAL '1 day', updated_at = NOW()
+      SET token = ${hashedToken}, expires_at = NOW() + INTERVAL '1 hour', updated_at = NOW()
       WHERE email = ${email}
       RETURNING expires_at;
     `
@@ -185,8 +186,9 @@ async function completeSignUpProcess(token: string): Promise<boolean> {
       return false
     }
 
-    // TODO: send email
-    // sendEmailConfirmedEmail(email)
+    const signInURL = new URL(`/auth/sign-in`, process.env.FRONTEND_BASE_URL)
+
+    await sendEmailConfirmedEmail(email, signInURL.toString())
 
     return true
   } catch (error) {
@@ -240,17 +242,15 @@ async function getUserById(userId: string): Promise<User | null> {
   }
 }
 
-async function processPasswordResetLinkRequest(userId: User['id']): Promise<void> {
+async function processPasswordResetLinkRequest(user: User): Promise<void> {
   const { token, hashedToken } = await generatePasswordResetToken()
 
-  await createPasswordResetRecord(userId, hashedToken)
+  await createPasswordResetRecord(user.id, hashedToken)
 
   const passwordResetURL = new URL(`/auth/password-reset/${token}`, process.env.FRONTEND_BASE_URL)
-
   console.log('Password reset link created. URL:', passwordResetURL.toString())
 
-  // TODO: send email
-  // sendPasswordResetLinkEmail(email, passwordResetURL)
+  await sendPasswordResetRequestEmail(user.email, passwordResetURL.toString())
 }
 
 async function createPasswordResetRecord(userId: User['id'], hashedToken: string): Promise<void> {

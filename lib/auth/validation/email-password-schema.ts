@@ -7,7 +7,9 @@ const emailPasswordSchema = z.object({
       invalid_type_error: 'Email must be a string',
     })
     .min(1, 'Email is required')
-    .email('Invalid email'),
+    .max(256, 'Email must be at most 256 characters')
+    .email('Invalid email')
+    .transform((email) => email.toLowerCase()),
   password: z
     .string({
       required_error: 'Password is required',

@@ -395,4 +395,5 @@ export {
   getUserById,
   updatePasswordAndFetchEmail,
   markPasswordResetTokenAsUsed,
+  hashUserPassword,
 }

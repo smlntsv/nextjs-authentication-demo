@@ -12,6 +12,7 @@ import {
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { EmailPassword, emailPasswordSchema } from '@/lib/auth/validation/email-password-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useCountdown } from '@/lib/hooks/use-countdown'
 
 export type AuthFormState = {
   fields: {
@@ -21,6 +22,10 @@ export type AuthFormState = {
   errors?: {
     email?: string[]
     password?: string[]
+  }
+  rateLimit?: {
+    isCounting: boolean
+    secondsRemaining: number
   }
   globalError?: string
 }
@@ -35,6 +40,8 @@ const AuthForm: FC<Props> = ({ action, submitButtonText, passwordAutocomplete })
   const [state, formAction, isSubmitting] = useActionState<AuthFormState, FormData>(action, {
     fields: { email: '', password: '' },
   })
+
+  const rateLimiterCountdownState = useCountdown(state.rateLimit?.secondsRemaining ?? 0)
 
   const [validationErrors, setValidationErrors] = useState<AuthFormState['errors']>(state.errors)
 
@@ -77,8 +84,10 @@ const AuthForm: FC<Props> = ({ action, submitButtonText, passwordAutocomplete })
     const errorMessage = validationErrors[field] ? validationErrors[field][0] : undefined
     if (!errorMessage) return null
 
+    const id = `auth-form-${field}-error`
+
     return (
-      <div id={`${field}-error`}>
+      <div data-testid={id} id={id}>
         <p style={{ color: 'red' }}>{errorMessage}</p>
       </div>
     )
@@ -95,12 +104,18 @@ const AuthForm: FC<Props> = ({ action, submitButtonText, passwordAutocomplete })
           <p style={{ color: 'red' }}>{state.globalError}</p>
         </div>
       )}
-      <form action={formAction} onSubmit={handleSubmit(onSubmit)}>
+      {rateLimiterCountdownState && rateLimiterCountdownState.secondsRemaining > 0 && (
+        <p data-testid={'auth-form-rate-limiter-message'}>
+          Too many attempts. Please wait {rateLimiterCountdownState.secondsRemaining} seconds.
+        </p>
+      )}
+      <form data-testid={'auth-form'} action={formAction} onSubmit={handleSubmit(onSubmit)}>
         {/* Email */}
         <div>
           <label htmlFor="email">Email</label>
           <br />
           <input
+            data-testid={'auth-form-email'}
             type="email"
             id={'email'}
             defaultValue={state.fields.email}
@@ -118,6 +133,7 @@ const AuthForm: FC<Props> = ({ action, submitButtonText, passwordAutocomplete })
           <label htmlFor="password">Password</label>
           <br />
           <input
+            data-testid={'auth-form-password'}
             type="password"
             id={'password'}
             defaultValue={state.fields.password}
@@ -130,7 +146,11 @@ const AuthForm: FC<Props> = ({ action, submitButtonText, passwordAutocomplete })
           {renderValidationError('password')}
         </div>
 
-        <button type={'submit'} disabled={isSubmitting}>
+        <button
+          type={'submit'}
+          disabled={isSubmitting || rateLimiterCountdownState?.isCounting}
+          data-testid={'auth-form-submit-button'}
+        >
           {submitButtonText}
         </button>
       </form>

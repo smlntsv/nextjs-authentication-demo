@@ -1,6 +1,9 @@
 import { SignOutButton } from '@/app/dashboard/sign-out-button'
 import { getAuthenticatedUser } from '@/lib/auth/session'
 
+// When removed it produce https://nextjs.org/docs/messages/dynamic-server-error
+export const dynamic = 'force-dynamic'
+
 const DashboardPage = async () => {
   const user = await getAuthenticatedUser()
 

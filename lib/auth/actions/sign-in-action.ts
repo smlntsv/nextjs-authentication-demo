@@ -6,6 +6,12 @@ import { redirect } from 'next/navigation'
 import { isUserPasswordValid, isUserRegisteredByEmail } from '@/lib/auth/utils/auth-utils'
 import { createSessionByEmail } from '@/lib/auth/session'
 import { AuthFormState } from '@/app/auth/auth-form'
+import { createRateLimiter } from '@/lib/rate-limiter'
+
+const checkSignInRateLimiter = createRateLimiter({
+  points: 2,
+  duration: 60,
+})
 
 async function signInAction(_: AuthFormState, formData: FormData): Promise<AuthFormState> {
   const nextState = {
@@ -24,6 +30,18 @@ async function signInAction(_: AuthFormState, formData: FormData): Promise<AuthF
   const { email, password } = validationResult.data
 
   try {
+    const rateLimiterKey = `sign-in-action-for:${email}`
+    const rateLimiterStatus = await checkSignInRateLimiter(rateLimiterKey)
+
+    if (!rateLimiterStatus.passed) {
+      nextState.rateLimit = {
+        isCounting: false,
+        secondsRemaining: Math.floor(rateLimiterStatus.msBeforeNext / 1000),
+      }
+
+      return nextState
+    }
+
     if (!(await isUserRegisteredByEmail(email))) {
       nextState.errors = { email: ['Email not found'] }
       return nextState

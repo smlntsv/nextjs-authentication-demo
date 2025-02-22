@@ -27,7 +27,7 @@ async function signUpAction(_: AuthFormState, formData: FormData): Promise<AuthF
   try {
     // Check if user already registered
     if (await isUserRegisteredByEmail(email)) {
-      nextState.errors = { email: ['Email is already registered'] }
+      nextState.errors = { email: ['Email already in use'] }
       return nextState
     }
 

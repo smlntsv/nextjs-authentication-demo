@@ -30,3 +30,39 @@ Cypress.Commands.overwrite(
 Cypress.Commands.add('getByDataId', (dataTestIdAttribute: string) => {
   return cy.get(`[data-testid="${dataTestIdAttribute}"]`)
 })
+
+Cypress.Commands.add('goOffline', () => {
+  console.log('commands go offline')
+  Cypress.automation('remote:debugger:protocol', {
+    command: 'Network.enable',
+  }).then(() => {
+    return Cypress.automation('remote:debugger:protocol', {
+      command: 'Network.emulateNetworkConditions',
+      params: {
+        offline: true,
+        latency: -1,
+        downloadThroughput: -1,
+        uploadThroughput: -1,
+      },
+    })
+  })
+})
+
+Cypress.Commands.add('goOnline', () => {
+  console.log('commands go online')
+  Cypress.automation('remote:debugger:protocol', {
+    command: 'Network.enable',
+  }).then(() => {
+    return Cypress.automation('remote:debugger:protocol', {
+      command: 'Network.emulateNetworkConditions',
+      params: {
+        offline: false,
+        latency: -1,
+        downloadThroughput: -1,
+        uploadThroughput: -1,
+      },
+    })
+  })
+
+  // Optionally Network.disable command can be called
+})

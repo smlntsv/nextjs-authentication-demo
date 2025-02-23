@@ -1,10 +1,9 @@
 async function makeSha256Hash(data: string) {
-  const hashedDataBuffer: ArrayBuffer = await crypto.subtle.digest(
-    'SHA-256',
-    new TextEncoder().encode(data)
-  )
+  const encodedData = new TextEncoder().encode(data)
+  const hashedDataBuffer: ArrayBuffer = await crypto.subtle.digest('SHA-256', encodedData)
+  const byteArray = new Uint8Array(hashedDataBuffer)
 
-  return Array.from(new Uint32Array(hashedDataBuffer))
+  return Array.from(byteArray)
     .map((byte) => byte.toString(16).padStart(2, '0'))
     .join('')
 }

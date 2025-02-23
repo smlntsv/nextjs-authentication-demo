@@ -15,17 +15,26 @@ import {
 const signUpScenarios = [
   {
     description: 'Java Script Enabled',
-    setup: () => {
+    visit: (url: string) => {
+      cy.visit(url)
+    },
+    visitSignUp: () => {
       cy.visit('/auth/sign-up')
     },
   },
   {
     description: 'Java Script Disabled',
-    setup: () => {
+    visit: (url: string) => {
+      cy.visit(url, { javaScriptEnabled: false })
+    },
+    visitSignUp: () => {
       cy.visit('/auth/sign-up', { javaScriptEnabled: false })
     },
   },
 ]
+
+// TODO: should trim whitespace from email field
+// should treat email as case-insensitive
 
 describe('Sign Up Journey', () => {
   after(() => {
@@ -34,9 +43,9 @@ describe('Sign Up Journey', () => {
 
   testFormSubmissionWithNoInternetConnection('/auth/sign-up')
 
-  signUpScenarios.forEach(({ description, setup }) => {
+  signUpScenarios.forEach(({ description, visitSignUp, visit }) => {
     context(description, () => {
-      beforeEach(setup)
+      beforeEach(visitSignUp)
 
       it('should render sign-up page', () => {
         cy.get('h1').contains('Create an account')
@@ -57,6 +66,8 @@ describe('Sign Up Journey', () => {
       context('Successful Sign Up', () => {
         const email = `${crypto.randomUUID()}@test.com`
         const password = 'Password-123123'
+
+        before(visitSignUp)
 
         after(() => {
           cy.task('db:delete:user', email)
@@ -87,7 +98,7 @@ describe('Sign Up Journey', () => {
         })
 
         it('should resend a confirmation email', () => {
-          cy.visit(`/auth/sign-up/confirmation-awaiting?email=${email}`)
+          visit(`/auth/sign-up/confirmation-awaiting?email=${email}`)
           cy.getByDataId('resend-confirmation-email-button').should('exist')
 
           cy.getByDataId('resend-confirmation-email-button').click()
@@ -95,7 +106,7 @@ describe('Sign Up Journey', () => {
         })
 
         it('should rate limit resends confirmation email clicks', () => {
-          cy.visit(`/auth/sign-up/confirmation-awaiting?email=${email}`)
+          visit(`/auth/sign-up/confirmation-awaiting?email=${email}`)
           cy.getByDataId('resend-confirmation-email-button').click()
           cy.contains('Too many attempts. Please wait')
         })
@@ -110,7 +121,7 @@ describe('Sign Up Journey', () => {
               return matchResult![1]
             })
             .then((emailConfirmationUrl) => {
-              cy.visit(emailConfirmationUrl)
+              visit(emailConfirmationUrl)
 
               cy.task('db:exists:user', email).then((result) => {
                 expect(result as boolean).equal(true, 'expected user to exist in the database')
@@ -138,7 +149,7 @@ describe('Sign Up Journey', () => {
               const matchResult = htmlBody!.match(/<a href="([\w:\/-]+\/auth\/sign-in)"/)
               expect(matchResult).not.equal(null)
 
-              cy.visit(matchResult![1])
+              visit(matchResult![1])
               attemptAuthentication(email, password)
               ensureOnDashboard()
             }

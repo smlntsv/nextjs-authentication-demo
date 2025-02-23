@@ -20,17 +20,23 @@ function testBasicValidation() {
   // Email Field Empty
   testEmptyEmailField()
 
+  // Minimum Password Length
+  testMinimumPasswordLength()
+
   // Maximum Input Length
   testMaximumInputLength()
 
-  // Require Upper Case Characters in Password
+  // Require Lowercase Characters in Password
+  testRejectsPasswordWithoutLowercase()
+
+  // Require Uppercase Characters in Password
   testRejectsPasswordWithoutUppercase()
 
   // Require Numbers in Password
   testRejectsPasswordWithoutNumbers()
 
   // Require Special Characters in Password
-  testRjectsPasswordWithoutSpecialCharacters()
+  testRejectsPasswordWithoutSpecialCharacters()
 }
 
 function testEmptyFormSubmission() {
@@ -74,6 +80,14 @@ function testEmptyEmailField() {
   })
 }
 
+function testMinimumPasswordLength() {
+  it('should display an error when password length less than 6 characters', () => {
+    attemptAuthentication('test@test.com', 'Pa-1')
+
+    assertPasswordErrorMessage('Password must be at least 6 characters')
+  })
+}
+
 function testMaximumInputLength() {
   it('should handle inputs exceeding maximum length', () => {
     const email = 'a'.repeat(257) + 'test@test.com'
@@ -86,8 +100,16 @@ function testMaximumInputLength() {
   })
 }
 
+function testRejectsPasswordWithoutLowercase() {
+  it('should not accept passwords without lowercase letters', () => {
+    attemptAuthentication('test@test.com', 'BBBBBBBBB123')
+
+    assertPasswordErrorMessage('Password must contain at least one lowercase letter')
+  })
+}
+
 function testRejectsPasswordWithoutUppercase() {
-  it('should not accept passwords without upper case characters', () => {
+  it('should not accept passwords without uppercase letters', () => {
     attemptAuthentication('test@test.com', 'bbbbbbbbb123')
 
     assertPasswordErrorMessage('Password must contain at least one uppercase letter')
@@ -102,7 +124,7 @@ function testRejectsPasswordWithoutNumbers() {
   })
 }
 
-function testRjectsPasswordWithoutSpecialCharacters() {
+function testRejectsPasswordWithoutSpecialCharacters() {
   it('should not accept passwords without special characters', () => {
     attemptAuthentication('test@test.com', 'Abbbbbbbbb123')
 
@@ -134,7 +156,7 @@ export {
   testMaximumInputLength,
   testRejectsPasswordWithoutUppercase,
   testRejectsPasswordWithoutNumbers,
-  testRjectsPasswordWithoutSpecialCharacters,
+  testRejectsPasswordWithoutSpecialCharacters,
   testBasicValidation,
   testFormSubmissionWithNoInternetConnection,
 }

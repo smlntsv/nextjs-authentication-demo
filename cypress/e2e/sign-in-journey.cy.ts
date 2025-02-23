@@ -12,17 +12,18 @@ import {
   testBasicValidation,
   testFormSubmissionWithNoInternetConnection,
 } from '@/cypress/e2e/auth-form-tests'
+import { randomizeStringCase } from '@/cypress/support/test-utils'
 
 const signInScenarios = [
   {
     description: 'Java Script Enabled',
-    setup: () => {
+    visitSignIn: () => {
       cy.visit('/auth/sign-in')
     },
   },
   {
     description: 'Java Script Disabled',
-    setup: () => {
+    visitSignIn: () => {
       cy.visit('/auth/sign-in', { javaScriptEnabled: false })
     },
   },
@@ -35,9 +36,9 @@ describe('Sign In Journey', () => {
 
   testFormSubmissionWithNoInternetConnection('/auth/sign-in')
 
-  signInScenarios.forEach(({ description, setup }) => {
+  signInScenarios.forEach(({ description, visitSignIn }) => {
     context(description, () => {
-      beforeEach(setup)
+      beforeEach(visitSignIn)
 
       it('should render sign-in page', () => {
         cy.get('h1').contains('Log in to your account')
@@ -70,7 +71,7 @@ describe('Sign In Journey', () => {
       })
 
       // Whitespace Handling
-      it('should trim whitespace from email and password fields', () => {
+      it('should trim whitespace from email field', () => {
         const { email, password } = createUniqueUser()
 
         attemptAuthentication(`   ${email}   `, password)
@@ -130,10 +131,3 @@ describe('Sign In Journey', () => {
     })
   })
 })
-
-function randomizeStringCase(email: string): string {
-  return email
-    .split('')
-    .map((char) => (Math.random() < 0.5 ? char.toLowerCase() : char.toUpperCase()))
-    .join('')
-}

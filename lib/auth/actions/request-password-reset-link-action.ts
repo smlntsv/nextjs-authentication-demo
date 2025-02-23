@@ -54,7 +54,7 @@ async function requestPasswordResetLinkAction(
     const user = await getUserByEmail(email)
 
     if (!user) {
-      nextState.errors = { email: ['User not found'] }
+      nextState.errors = { email: ['Email not found'] }
       return nextState
     }
 

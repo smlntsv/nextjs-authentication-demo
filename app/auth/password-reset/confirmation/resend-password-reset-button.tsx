@@ -24,7 +24,11 @@ const ResendPasswordResetButton: FC<Props> = ({ email }) => {
       <form action={formAction}>
         <input type={'hidden'} name={'redirect'} value={'false'} />
         <input type={'hidden'} name={'email'} value={email} />
-        <button type={'submit'} disabled={isSubmitting || rateLimiterCountdownState?.isCounting}>
+        <button
+          data-testid={'resend-password-reset-link-button'}
+          type={'submit'}
+          disabled={isSubmitting || rateLimiterCountdownState?.isCounting}
+        >
           {isSubmitting ? 'Please wait...' : 'Resend Password Reset Link'}
         </button>
       </form>

@@ -66,8 +66,10 @@ const PasswordResetForm = () => {
     const errorMessage = validationErrors[field] ? validationErrors[field][0] : undefined
     if (!errorMessage) return null
 
+    const id = `${field}-error`
+
     return (
-      <div id={`${field}-error`}>
+      <div data-testid={id} id={id}>
         <p style={{ color: 'red' }}>{errorMessage}</p>
       </div>
     )
@@ -81,18 +83,26 @@ const PasswordResetForm = () => {
     <div>
       <h1>Password Reset</h1>
       {state.globalError && (
-        <div>
+        <div data-testid={'global-error'}>
           <p style={{ color: 'red' }}>{state.globalError}</p>
         </div>
       )}
       {rateLimitState && rateLimitState.secondsRemaining > 0 && (
-        <p>Too many attempts. Please wait {rateLimitState.secondsRemaining} seconds.</p>
+        <p data-testid={'rate-limiter-message'}>
+          Too many attempts. Please wait {rateLimitState.secondsRemaining} seconds.
+        </p>
       )}
-      <form action={formAction} onSubmit={handleSubmit(onSubmit)}>
+      <form
+        data-testid={'reset-password-form'}
+        action={formAction}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         {/* Email */}
         <div>
           <label htmlFor={'email'}>Email</label>
           <input
+            data-testid={'email-field'}
+            type={'email'}
             id={'email'}
             defaultValue={state.fields.email}
             placeholder={'Enter your email address'}
@@ -104,10 +114,15 @@ const PasswordResetForm = () => {
           {renderValidationError('email')}
         </div>
 
-        <input type={'hidden'} value={'true'} {...register('redirect')} />
+        <input
+          data-testid={'redirect-field'}
+          type={'hidden'}
+          value={'true'}
+          {...register('redirect')}
+        />
 
         {/* Submit Button */}
-        <button type="submit" disabled={isSubmitting}>
+        <button data-testid={'reset-password-button'} type="submit" disabled={isSubmitting}>
           Reset Password
         </button>
       </form>

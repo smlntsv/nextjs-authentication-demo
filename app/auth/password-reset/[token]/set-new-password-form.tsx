@@ -66,8 +66,10 @@ const SetNewPasswordForm: FC<Props> = ({ passwordResetToken }) => {
     const errorMessage = validationErrors[field] ? validationErrors[field][0] : undefined
     if (!errorMessage) return null
 
+    const id = `${field}-error`
+
     return (
-      <div id={`${field}-error`}>
+      <div data-testid={id} id={id}>
         <p style={{ color: 'red' }}>{errorMessage}</p>
       </div>
     )
@@ -85,6 +87,7 @@ const SetNewPasswordForm: FC<Props> = ({ passwordResetToken }) => {
         <div>
           <label htmlFor={'password'}>Password</label>
           <input
+            data-testid={'password-field'}
             type="password"
             id={'password'}
             defaultValue={state.fields.password}
@@ -99,7 +102,7 @@ const SetNewPasswordForm: FC<Props> = ({ passwordResetToken }) => {
 
         <input type={'hidden'} value={passwordResetToken} {...register('passwordResetToken')} />
 
-        <button type={'submit'} disabled={isSubmitting}>
+        <button data-testid={'reset-password-button'} type={'submit'} disabled={isSubmitting}>
           Reset password
         </button>
         {renderValidationError('passwordResetToken')}

@@ -1,5 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { DisplaySize, Heading, Weight } from '@/components/ui/typography/heading'
+import type { DisplaySize } from '@/components/ui/typography/typography-shared'
+import { typographyWeights } from '@/components/ui/typography/typography-shared'
+import { Heading } from '@/components/ui/typography/heading'
+import {
+  allowedHeadingElements,
+  headingSizeMap,
+  headingWeightMap,
+} from '@/components/ui/typography/heading/heading'
 
 // Meta
 export default {
@@ -10,11 +17,11 @@ export default {
       description: 'Specifies the HTML heading element to render, controlling semantic structure.',
       control: {
         type: 'select',
-        options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+        options: allowedHeadingElements,
       },
       table: {
-        type: { summary: '"h1" | "h2" | "h3" | "h4" | "h5" | "h6"' },
-        defaultValue: { summary: 'h1' },
+        type: { summary: allowedHeadingElements.join(' | ') },
+        defaultValue: { summary: allowedHeadingElements[0] },
       },
     },
     size: {
@@ -22,10 +29,10 @@ export default {
         'Sets the visual size of the heading, independent of the HTML element, for consistent typography scaling.',
       control: {
         type: 'select',
-        options: ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'],
+        options: Object.keys(headingSizeMap),
       },
       table: {
-        type: { summary: '"2xl" | "xl" | "lg" | "md" | "sm" | "xs"' },
+        type: { summary: Object.keys(headingSizeMap).join(' | ') },
         defaultValue: { summary: 'md' },
       },
     },
@@ -34,10 +41,10 @@ export default {
         'Controls the font weight of the heading, affecting its boldness and visual emphasis.',
       control: {
         type: 'select',
-        options: ['regular', 'medium', 'semibold', 'bold'],
+        options: Object.keys(headingWeightMap),
       },
       table: {
-        type: { summary: '"regular" | "medium" | "semibold" | "bold"' },
+        type: { summary: Object.keys(headingWeightMap).join(' | ') },
         defaultValue: { summary: 'regular' },
       },
     },
@@ -56,8 +63,6 @@ export default {
 
 // Stories
 type Story = StoryObj<typeof Heading>
-
-const weights: Weight[] = ['regular', 'medium', 'semibold', 'bold']
 
 export const Default: Story = {
   args: {
@@ -80,7 +85,7 @@ function renderHeading(size: DisplaySize): Pick<Story, 'render'> {
   return {
     render: () => (
       <>
-        {weights.map((weight) => (
+        {typographyWeights.map((weight) => (
           <Heading key={weight} as={'h1'} size={size} weight={weight}>
             Display {size} {weight}
           </Heading>

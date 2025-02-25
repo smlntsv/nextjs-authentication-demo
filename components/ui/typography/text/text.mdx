@@ -1,0 +1,33 @@
+import { Meta, Canvas, Story, Controls } from '@storybook/blocks'
+import * as TextStories from './text.stories'
+
+<Meta of={TextStories} />
+
+# Text
+
+The `Text` component is used for displaying text in various sizes and weights.
+
+## Examples
+
+<Canvas of={TextStories.Default} sourceState={'shown'} />
+<Controls of={TextStories.Default} />
+
+## Text xl
+
+<Story of={TextStories.TextXL} />
+
+## Text lg
+
+<Story of={TextStories.TextLG} />
+
+## Text md
+
+<Story of={TextStories.TextMD} />
+
+## Text sm
+
+<Story of={TextStories.TextSM} />
+
+## Text xs
+
+<Story of={TextStories.TextSM} />

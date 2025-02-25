@@ -14,7 +14,8 @@ const eslintConfig = [
     'next/core-web-vitals',
     'next/typescript',
     'plugin:prettier/recommended',
-    'plugin:cypress/recommended'
+    'plugin:cypress/recommended',
+    'plugin:storybook/recommended'
   ),
 ]
 

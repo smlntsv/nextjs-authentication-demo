@@ -1,0 +1,37 @@
+import { Meta, Canvas, Story, Controls } from '@storybook/blocks'
+import * as HeadingStories from './heading.stories'
+
+<Meta of={HeadingStories} />
+
+# Heading
+
+The `Heading` component is used for displaying headings in various sizes and weights.
+
+## Examples
+
+<Canvas of={HeadingStories.Default} sourceState={'shown'} />
+<Controls of={HeadingStories.Default} />
+
+## Display 2xl
+
+<Story of={HeadingStories.Display2XL} />
+
+## Display xl
+
+<Story of={HeadingStories.DisplayXL} />
+
+## Display lg
+
+<Story of={HeadingStories.DisplayLG} />
+
+## Display md
+
+<Story of={HeadingStories.DisplayMD} />
+
+## Display sm
+
+<Story of={HeadingStories.DisplaySM} />
+
+## Display xs
+
+<Story of={HeadingStories.DisplayXS} />

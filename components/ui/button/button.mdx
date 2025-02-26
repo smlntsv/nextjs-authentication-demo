@@ -1,0 +1,54 @@
+import { Meta, Canvas, Story, Controls } from '@storybook/blocks'
+import * as ButtonStories from './button.stories'
+
+<Meta of={ButtonStories} />
+
+# Button
+
+The `Button` component is used for actions within application. It supports various styles and sizes to fit different use cases.
+
+For links, use the `LinkButton` component, which has exactly the same API as `Button`, except it accepts an `href` prop instead of a `loading` prop.
+
+# Examples
+
+<Canvas of={ButtonStories.DefaultButton} sourceState={'shown'} />
+<Controls of={ButtonStories.DefaultButton} />
+
+## Basic
+
+<Story of={ButtonStories.BasicButtons} />
+
+## Disabled
+
+<Story of={ButtonStories.DisabledButtons} />
+
+## Loading
+
+<Story of={ButtonStories.LoadingButtons} />
+
+## Leading Icon
+
+<Story of={ButtonStories.LeadingIconButtons} />
+
+
+# Sizes
+
+## Button 2XL
+
+<Story of={ButtonStories.Button2XL} />
+
+## Button XL
+
+<Story of={ButtonStories.ButtonXL} />
+
+## Button LG
+
+<Story of={ButtonStories.ButtonLG} />
+
+## Button MD
+
+<Story of={ButtonStories.ButtonMD} />
+
+## Button SM
+
+<Story of={ButtonStories.ButtonSM} />

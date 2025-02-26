@@ -1,0 +1,14 @@
+import { Meta, Canvas, Story, Controls } from '@storybook/blocks'
+import * as ContainerStories from './container.stories'
+
+<Meta of={ContainerStories} />
+
+# Container
+
+The `Container` component is a layout component designed to wrap content with consistent padding and maximum width constraints. It adapts its padding based on the screen size to ensure optimal readability and aesthetics.
+
+## Example
+
+<Canvas of={ContainerStories.Default} sourceState={'shown'} />
+<Controls of={ContainerStories.Default} />
+

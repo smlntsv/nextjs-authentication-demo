@@ -1,0 +1,14 @@
+.container {
+  padding-left: var(--container-padding-modile);
+  padding-right: var(--container-padding-modile);
+  max-width: var(--container-max-width-desktop);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 48rem) {
+  .container {
+    padding-left: var(--container-padding-desktop);
+    padding-right: var(--container-padding-desktop);
+  }
+}

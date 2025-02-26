@@ -23,6 +23,7 @@ interface TextProps extends ComponentPropsWithRef<ElementType> {
   as?: ElementType
   size?: TextSize
   weight?: Weight
+  className?: string
 }
 
 const allowedTextElements: ElementType[] = ['b', 'em', 'i', 'p', 'pre', 'span', 'strong']
@@ -32,6 +33,7 @@ const Text: FC<TextProps> = ({
   as = 'p',
   size = 'md',
   weight = 'regular',
+  className,
   children,
   ...rest
 }) => {
@@ -46,7 +48,7 @@ const Text: FC<TextProps> = ({
   return (
     <Component
       ref={ref}
-      className={clsx(sharedStyles.base, textSizeMap[size], textWeightMap[weight])}
+      className={clsx(sharedStyles.base, textSizeMap[size], textWeightMap[weight], className)}
       {...rest}
     >
       {children}

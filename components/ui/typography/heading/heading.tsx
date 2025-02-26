@@ -28,6 +28,7 @@ interface HeadingProps extends ComponentPropsWithRef<HeadingNativeElements> {
   as?: HeadingNativeElements
   size?: DisplaySize
   weight?: Weight
+  className?: string
 }
 
 const Heading: FC<HeadingProps> = ({
@@ -35,6 +36,7 @@ const Heading: FC<HeadingProps> = ({
   as = 'h1',
   size = 'md',
   weight = 'regular',
+  className,
   children,
   ...rest
 }) => {
@@ -43,7 +45,7 @@ const Heading: FC<HeadingProps> = ({
   return (
     <Component
       ref={ref}
-      className={clsx(sharedStyles.base, headingSizeMap[size], headingWeightMap[weight])}
+      className={clsx(sharedStyles.base, headingSizeMap[size], headingWeightMap[weight], className)}
       {...rest}
     >
       {children}

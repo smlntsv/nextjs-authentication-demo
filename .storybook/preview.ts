@@ -41,10 +41,13 @@ const preview: Preview = {
       if (context.viewMode === 'docs') {
         let currentElement = context.canvasElement
 
-        while (currentElement?.parentElement) {
+        while (currentElement.tagName !== 'BODY' && currentElement?.parentElement) {
           if (currentElement.classList.contains('docs-story')) {
             currentElement.style.background = currentBackgroundColor
-            break
+          }
+
+          if (currentElement.classList.contains('sb-story')) {
+            currentElement.style.background = currentBackgroundColor
           }
 
           currentElement = currentElement.parentElement

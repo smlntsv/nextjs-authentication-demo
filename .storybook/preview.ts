@@ -5,7 +5,7 @@ type BackgroundValue = { name: string; value: string }
 
 const backgroundValues: BackgroundValue[] = [
   { name: 'Light', value: '#ffffff' },
-  { name: 'Dark', value: '#1e293b' },
+  { name: 'Dark', value: '#0C0E12' },
 ]
 
 const preview: Preview = {

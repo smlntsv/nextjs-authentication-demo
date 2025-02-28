@@ -1,0 +1,108 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.wrapper label {
+  font-size: var(--font-size-text-sm);
+  line-height: var(--line-height-text-sm);
+  letter-spacing: var(--letter-spacing-text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputBase {
+  font-family: inherit;
+  width: 100%;
+  border: none;
+  outline: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+}
+
+.inputError {
+  outline-color: var(--color-error-600);
+}
+
+.inputBase:focus {
+  outline: 2px solid var(--color-border-brand);
+}
+
+.inputError:focus {
+  outline: 2px solid var(--color-error-600);
+}
+
+.inputBase::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.inputBase:disabled {
+  outline-color: var(--color-border-disabled);
+  color: var(--color-text-disabled);
+  background-color: var(--color-bg-disabled_subtle);
+}
+
+.sizeSM {
+  font-size: var(--font-size-text-md);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-text-md);
+  letter-spacing: var(--letter-spacing-text-md);
+
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.sizeMD {
+  font-size: var(--font-size-text-md);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-text-md);
+  letter-spacing: var(--letter-spacing-text-md);
+
+  padding: 10px 14px;
+}
+
+.error {
+  z-index: -1;
+  font-size: var(--font-size-text-sm);
+  line-height: var(--line-height-text-sm);
+  letter-spacing: var(--letter-spacing-text-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-error-primary);
+  position: absolute;
+  top: 100%;
+}
+
+.passwordVisibilityButton {
+  position: absolute;
+  cursor: pointer;
+  right: 10px;
+
+  background: none;
+  border: none;
+  color: var(--color-fg-quinary);
+  border-radius: var(--radius-md);
+}
+
+.passwordVisibilityButton:focus-visible {
+  outline: 2px solid var(--color-border-brand);
+}
+
+.passwordVisibilityButton:hover {
+  color: var(--color-fg-quinary_hover);
+}
+
+.passwordVisibilityButtonWithError:focus {
+  outline: 2px solid var(--color-error-600);
+}
+
+.rightIconPadding {
+  padding-right: var(--spacing-5xl);
+}

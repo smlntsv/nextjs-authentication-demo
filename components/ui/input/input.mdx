@@ -1,0 +1,36 @@
+import { Meta, Canvas, Story, Controls } from '@storybook/blocks'
+import * as InputStories from './input.stories'
+
+<Meta of={InputStories} />
+
+# Input
+
+The `Input` component is a versatile and customizable input field. It supports various input types and sizes, making it suitable for a wide range of form elements.
+
+#### Key features
+- **Type Variants**: Supports text, email, adn password input types.
+- **Size Variants**: Two size options, `sm` (small) and `md` (medium).
+- **Password Visibility Toggle**: For password inputs, users can toggle visibility using an eye icon.
+- **Error Handling**: Displays error message with smooth animation using `motion/react`.
+- **Accessibility**: Implements ARIA attributes to ensure the component is accessible.
+
+## Examples
+
+<Canvas of={InputStories.Default} sourceState={'shown'} />
+<Controls of={InputStories.Default} />
+
+## Password Input
+
+<Story of={InputStories.PasswordInputMD} />
+
+## Password Input With Error
+
+<Story of={InputStories.PasswordInputWithErrorMD} />
+
+## Email Input
+
+<Story of={InputStories.EmailInputMD} />
+
+## Email Input With Error
+
+<Story of={InputStories.EmailInputWithErrorMD} />

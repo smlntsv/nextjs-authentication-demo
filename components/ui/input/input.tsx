@@ -1,9 +1,10 @@
-import { ComponentPropsWithRef, FC, useId, useState, useEffect } from 'react'
+import { ComponentPropsWithRef, FC, useId, useState } from 'react'
 import styles from './input.module.css'
 import { clsx } from 'clsx'
 import { IconEye } from '@/components/icons/icon-eye'
 import { IconEyeOff } from '@/components/icons/icon-eye-off'
 import { AnimatePresence, motion } from 'motion/react'
+import { useIsMounted } from '@/hooks/use-is-mounted'
 
 type InputSize = 'sm' | 'md'
 
@@ -33,7 +34,7 @@ const Input: FC<InputProps> = ({
 }) => {
   const inputId = useId()
   const errorId = useId()
-  const [isMounted, setIsMounted] = useState<boolean>(false)
+  const isMounted = useIsMounted()
   const [innerInputType, setInnerInputType] = useState<InputType>(type)
 
   const isPasswordInput = type === 'password'
@@ -42,10 +43,6 @@ const Input: FC<InputProps> = ({
   const togglePasswordVisibility = () => {
     setInnerInputType((prevState) => (prevState === 'password' ? 'text' : 'password'))
   }
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
 
   return (
     <div className={clsx(styles.wrapper, className)} style={style}>

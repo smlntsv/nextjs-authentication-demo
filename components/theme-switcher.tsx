@@ -1,15 +1,12 @@
 'use client'
 
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 import { useTheme } from 'next-themes'
+import { useIsMounted } from '@/hooks/use-is-mounted'
 
 const ThemeSwitcher: FC = () => {
-  const [isMounted, setIsMounted] = useState(false)
   const { theme, setTheme } = useTheme()
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
+  const isMounted = useIsMounted()
 
   return (
     <select

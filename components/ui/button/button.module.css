@@ -1,7 +1,7 @@
 .base {
     font-family: inherit;
     cursor: initial;
-    border: none;
+    border: 1px solid transparent;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -28,7 +28,7 @@
 .variantPrimary {
     background-color: var(--color-button-primary-bg);
     color: var(--color-button-primary_fg);
-    border: none;
+    border-color: var(--color-button-primary-bg);
 }
 
 .variantPrimary:hover, .variantPrimary:active {
@@ -38,14 +38,14 @@
 .variantPrimary:disabled {
     background-color: var(--color-bg-disabled);
     color: var(--color-fg-disabled);
-    border: 1px solid var(--color-border-disabled_subtle);
+    border-color: var(--color-border-disabled_subtle);
 }
 
 /* Secondary Gray */
 .variantSecondaryGray {
     background-color: var(--color-button-secondary-bg);
     color: var(--color-button-secondary-fg);
-    border: 1px solid var(--color-button-secondary-border);
+    border-color: var(--color-button-secondary-border);
 }
 
 .variantSecondaryGray:hover, .variantSecondaryGray:active {
@@ -55,14 +55,14 @@
 .variantSecondaryGray:disabled {
     background-color: var(--color-bg-primary);
     color: var(--color-fg-disabled);
-    border: 1px solid var(--color-border-disabled_subtle);
+    border-color: var(--color-border-disabled_subtle);
 }
 
 /* Secondary Color */
 .variantSecondaryColor {
     background-color: var(--color-button-secondary-color-bg);
     color: var(--color-button-secondary-color-fg);
-    border: 1px solid var(--color-button-secondary-color-border);
+    border-color: var(--color-button-secondary-color-border);
 }
 
 .variantSecondaryColor:hover, .variantSecondaryColor:active {
@@ -72,14 +72,14 @@
 .variantSecondaryColor:disabled {
     background-color: var(--color-bg-primary);
     color: var(--color-fg-disabled);
-    border: 1px solid var(--color-border-disabled_subtle);
+    border-color: var(--color-border-disabled_subtle);
 }
 
 /* Tertiary Gray */
 .variantTertiaryGray {
     background-color: transparent;
     color: var(--color-button-tertiary-fg);
-    border: none;
+    border-color: transparent;
 }
 
 .variantTertiaryGray:hover, .variantTertiaryGray:active {
@@ -90,14 +90,14 @@
 .variantTertiaryGray:disabled {
     background-color: var(--color-bg-primary);
     color: var(--color-fg-disabled);
-    border: none;
+    border-color: transparent;
 }
 
 /* Tertiary Color */
 .variantTertiaryColor {
     background-color: transparent;
     color: var(--color-button-tertiary-color-fg);
-    border: none;
+    border-color: transparent;
 }
 
 .variantTertiaryColor:hover, .variantTertiaryColor:active {
@@ -108,14 +108,14 @@
 .variantTertiaryColor:disabled {
     background-color: var(--color-bg-primary);
     color: var(--color-fg-disabled);
-    border: none;
+    border-color: transparent;
 }
 
 /* Link Gray */
 .variantLinkGray {
     background-color: transparent;
     color: var(--color-button-tertiary-fg);
-    border: none;
+    border-color: transparent;
 }
 
 .variantLinkGray.sizeSM,
@@ -133,14 +133,14 @@
 .variantLinkGray:disabled {
     background-color: var(--color-bg-primary);
     color: var(--color-fg-disabled);
-    border: none;
+    border-color: transparent;
 }
 
 /* Link Color */
 .variantLinkColor {
     background-color: transparent;
     color: var(--color-button-tertiary-color-fg);
-    border: none;
+    border-color: transparent;
 }
 
 .variantLinkColor.sizeSM,
@@ -158,7 +158,7 @@
 .variantLinkColor:disabled {
     background-color: var(--color-bg-primary);
     color: var(--color-fg-disabled);
-    border: none;
+    border-color: transparent;
 }
 
 /* Sizes */
@@ -174,8 +174,8 @@
 }
 
 .sizeSM svg {
-    width: var(--line-height-text-sm);
-    height: var(--line-height-text-sm);
+    max-width: var(--line-height-text-sm);
+    max-height: var(--line-height-text-sm);
 }
 
 .sizeMD {
@@ -190,8 +190,8 @@
 }
 
 .sizeMD svg {
-    width: var(--line-height-text-sm);
-    height: var(--line-height-text-sm);
+    max-width: var(--line-height-text-sm);
+    max-height: var(--line-height-text-sm);
 }
 
 .sizeLG {
@@ -206,8 +206,8 @@
 }
 
 .sizeLG svg {
-    width: var(--line-height-text-md);
-    height: var(--line-height-text-md);
+    max-width: var(--line-height-text-md);
+    max-height: var(--line-height-text-md);
 }
 
 .sizeXL {
@@ -222,8 +222,8 @@
 }
 
 .sizeXL svg {
-    width: var(--line-height-text-md);
-    height: var(--line-height-text-md);
+    max-width: var(--line-height-text-md);
+    max-height: var(--line-height-text-md);
 }
 
 .size2XL {
@@ -238,6 +238,6 @@
 }
 
 .size2XL svg {
-    width: var(--line-height-text-lg);
-    height: var(--line-height-text-lg);
+    max-width: var(--line-height-text-lg);
+    max-height: var(--line-height-text-lg);
 }

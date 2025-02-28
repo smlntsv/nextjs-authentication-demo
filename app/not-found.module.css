@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 100vh;
+  width: fit-content;
+}
+
+.subheading {
+  color: var(--color-text-brand-secondary)
+}
+
+.heading {
+  color: var(--color-text-primary);
+}
+
+.description {
+  color: var(--color-text-tertiary);
+}
+
+.buttonsGroup {
+  display: flex;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  margin-top: var(--spacing-6xl);
+}

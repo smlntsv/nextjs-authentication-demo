@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { ErrorPage } from './error-page'
+import { ErrorPage } from '@/components/error-page'
 import { Button } from '@/components/ui/button'
 import { defaultErrorPageProps } from '@/app/error'
 import { notFoundErrorPageProps } from '@/app/not-found'

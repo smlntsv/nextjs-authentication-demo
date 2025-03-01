@@ -2,7 +2,7 @@ import { Text } from '@/components/ui/typography/text'
 import { Heading } from '@/components/ui/typography/heading'
 import { Container } from '@/components/ui/container'
 import { FC, ReactNode } from 'react'
-import styles from './error-page.module.css'
+import styles from '@/components/error-page/error-page.module.css'
 
 interface ErrorPageProps {
   subheading: string

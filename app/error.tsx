@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useState } from 'react'
 import { Button, LinkButton } from '@/components/ui/button'
-import { ErrorPage, ErrorPagePropsWithoutActions } from '@/components/error-page/error-page'
+import { ErrorPage, ErrorPagePropsWithoutActions } from '@/components/error-page'
 
 const defaultErrorPageProps: ErrorPagePropsWithoutActions = {
   subheading: 'Unexpected Error',

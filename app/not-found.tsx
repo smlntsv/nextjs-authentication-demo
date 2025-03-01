@@ -1,4 +1,4 @@
-import { ErrorPage, ErrorPagePropsWithoutActions } from '@/components/error-page/error-page'
+import { ErrorPage, ErrorPagePropsWithoutActions } from '@/components/error-page'
 import { LinkButton } from '@/components/ui/button'
 import { GoBackButton } from '@/components/go-back-button'
 

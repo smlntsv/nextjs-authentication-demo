@@ -1,0 +1,21 @@
+import { Meta, Canvas, Story, Controls } from '@storybook/blocks'
+import * as ErrorPageStories from './error-page.stories'
+
+<Meta of={ErrorPageStories} />
+
+# ErrorPage
+
+The `ErrorPage` component is used to display error messages in a structured format. It is used in scenarios such as 404 Not Found page or when handling uncaught exceptions or fetch errors.
+
+# Examples
+
+<Canvas of={ErrorPageStories.Default} sourceState={'shown'} />
+<Controls of={ErrorPageStories.Default} />
+
+## Not Found Page
+
+<Story of={ErrorPageStories.NotFound} />
+
+## Uncaught Error Page
+
+<Story of={ErrorPageStories.UncaughtError} />

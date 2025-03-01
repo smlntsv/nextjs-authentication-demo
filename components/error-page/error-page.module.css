@@ -23,5 +23,15 @@
   display: flex;
   gap: var(--spacing-lg);
   flex-wrap: wrap;
-  margin-top: var(--spacing-6xl);
+  margin-top: var(--spacing-5xl);
+}
+
+@media (max-width: 700px) {
+  .heading {
+    line-height: var(--line-height-display-lg);
+  }
+
+  .description {
+    margin-top: var(--spacing-xl);
+  }
 }

@@ -1,6 +1,22 @@
 'use client'
 
 import { FC, useEffect, useState } from 'react'
+import { Button, LinkButton } from '@/components/ui/button'
+import { ErrorPage, ErrorPagePropsWithoutActions } from '@/components/error-page/error-page'
+
+const defaultErrorPageProps: ErrorPagePropsWithoutActions = {
+  subheading: 'Unexpected Error',
+  heading: 'Something went wrong',
+  description:
+    'An unexpected error occurred. Please try again or contact support if the issue persists.',
+}
+
+const failedToFetchErrorPageProps: ErrorPagePropsWithoutActions = {
+  subheading: 'Network error',
+  heading: 'Connection Issue Detected',
+  description:
+    'It seems there is a problem with your internet connection. Please check your connection and try again.',
+}
 
 type Props = {
   error: Error & { digest?: string }
@@ -8,22 +24,31 @@ type Props = {
 }
 
 const Error: FC<Props> = ({ error, reset }) => {
-  const [message, setMessage] = useState('Sorry it looks like something went wrong!')
+  const [errorPageProps, setErrorPageProps] =
+    useState<ErrorPagePropsWithoutActions>(defaultErrorPageProps)
 
   useEffect(() => {
     if (error.message === 'Failed to fetch') {
-      setMessage('It looks like there is a problems with Internet connection.')
+      setErrorPageProps(failedToFetchErrorPageProps)
     }
   }, [error])
 
   return (
-    <>
-      <div>{message}</div>
-      <button data-testid={'try-again-button'} onClick={() => reset()}>
-        Try Again
-      </button>
-    </>
+    <ErrorPage
+      {...errorPageProps}
+      renderActionButtons={() => (
+        <>
+          <Button data-testid={'try-again-button'} onClick={reset} size={'xl'}>
+            Try Again
+          </Button>
+          <LinkButton variant={'secondaryGray'} href={'/'} size={'xl'}>
+            Take me home
+          </LinkButton>
+        </>
+      )}
+    />
   )
 }
 
+export { defaultErrorPageProps, failedToFetchErrorPageProps }
 export default Error

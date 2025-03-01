@@ -9,6 +9,7 @@ interface ButtonProps extends ComponentPropsWithRef<'button'> {
   size?: ButtonSize
   loading?: boolean
   leadingIcon?: ReactNode
+  className?: string
 }
 
 const Button: FC<ButtonProps> = ({
@@ -18,12 +19,13 @@ const Button: FC<ButtonProps> = ({
   disabled,
   loading = false,
   leadingIcon = null,
+  className,
   children,
   ...rest
 }) => (
   <button
     ref={ref}
-    className={clsx(styles.base, buttonSizeMap[size], buttonVariantMap[variant])}
+    className={clsx(styles.base, buttonSizeMap[size], buttonVariantMap[variant], className)}
     disabled={disabled || loading}
     {...rest}
   >
@@ -34,4 +36,5 @@ const Button: FC<ButtonProps> = ({
 
 Button.displayName = 'Button'
 
+export type { ButtonProps }
 export { Button }

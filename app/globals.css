@@ -415,7 +415,7 @@
     --color-gray-700: #373A41;
     --color-gray-800: #22262F;
     --color-gray-900: #13161B;
-    --color-gray-950: #OCOE12;
+    --color-gray-950: #0C0E12;
 
     /* Text Color */
 
@@ -572,7 +572,7 @@
     --color-bg-brand-section_subtle: var(--color-gray-950);
 
     /* Primary error state background color for components. */
-    --color-bg-error-primary: var(--color-error-500);
+    --color-bg-error-primary: var(--color-black);
 
     /* Secondary error state background color for components such as featured icons. */
     --color-bg-error-secondary: var(--color-error-600);
@@ -581,7 +581,7 @@
     --color-bg-error-solid: var(--color-error-600);
 
     /* Primary warning state background color for components. */
-    --color-bg-warning-primary: var(--color-warning-500);
+    --color-bg-warning-primary: var(--color-black);
 
     /* Secondary warning state background color for components such as featured icons. */
     --color-bg-warning-secondary: var(--color-warning-600);
@@ -626,9 +626,6 @@
   --color-button-tertiary-color-fg: var(--color-brand-400);
   --color-button-tertiary-color-fg_hover: var(--color-brand-200);
   --color-button-tertiary-color-bg_hover: var(--color-brand-950);
-
-  --color-background: #0C0E12;
-  --color-foreground: #ededed;
 }
 
 html,
@@ -638,8 +635,8 @@ body {
 }
 
 body {
-  color: var(--color-foreground);
-  background: var(--color-background);
+  color: var(--color-fg-primary);
+  background: var(--color-bg-primary);
   font-family: Inter, Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

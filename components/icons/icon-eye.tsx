@@ -9,4 +9,6 @@ const IconEye: FC<SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 )
 
+IconEye.displayName = 'Icon Eye'
+
 export { IconEye }

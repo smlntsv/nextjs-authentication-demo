@@ -1,0 +1,32 @@
+import { Meta, IconGallery, IconItem } from '@storybook/blocks'
+import { IconArrowLeft } from './icon-arrow-left'
+import { IconCheck } from './icon-check'
+import { IconError } from './icon-error'
+import { IconEye } from './icon-eye'
+import { IconEyeOff } from './icon-eye-off'
+import { IconKey } from './icon-key'
+import { IconLoading } from './icon-loading'
+import { IconMail } from './icon-mail'
+import { IconUser } from './icon-user'
+
+<Meta title="Iconography" />
+
+# Iconography
+
+<IconGallery>
+  {[
+    IconArrowLeft,
+    IconCheck,
+    IconError,
+    IconEye,
+    IconEyeOff,
+    IconKey,
+    IconLoading,
+    IconMail,
+    IconUser,
+  ].map((Icon) => (
+    <IconItem name={Icon.displayName}>
+      <Icon />
+    </IconItem>
+  ))}
+</IconGallery>

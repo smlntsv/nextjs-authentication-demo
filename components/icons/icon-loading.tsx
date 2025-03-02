@@ -29,4 +29,6 @@ const IconLoading: FC<SVGProps<SVGSVGElement>> = ({ className, ...rest }) => (
   </svg>
 )
 
+IconLoading.displayName = 'Icon Loading'
+
 export { IconLoading }

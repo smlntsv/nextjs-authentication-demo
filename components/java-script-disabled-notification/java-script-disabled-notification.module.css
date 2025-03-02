@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl);
+  color: var(--color-text-warning-primary);
+  background-color: var(--color-bg-warning-primary);
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+  z-index: -1;
+}
+
+.container .text {
+  color: var(--color-text-warning-primary);
+}

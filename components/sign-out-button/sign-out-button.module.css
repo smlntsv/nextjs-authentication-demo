@@ -1,0 +1,8 @@
+.signOutForm {
+  display: flex;
+  width: 100%;
+}
+
+.signOutForm button {
+  width: 100%;
+}

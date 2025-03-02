@@ -3,6 +3,11 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theming/theme-provider'
+import { ThemeSwitcher } from '@/components/theming/theme-switcher'
+import { ThemeSwitcherPositioner } from '@/components/theming/theme-switcher-positioner'
+import { JavaScriptDisabledNotification } from '@/components/java-script-disabled-notification'
+
+export const dynamic = 'force-dynamic'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -21,7 +26,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <JavaScriptDisabledNotification />
+          <ThemeSwitcherPositioner>
+            <ThemeSwitcher />
+          </ThemeSwitcherPositioner>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

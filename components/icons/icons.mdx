@@ -1,12 +1,15 @@
 import { Meta, IconGallery, IconItem } from '@storybook/blocks'
 import { IconArrowLeft } from './icon-arrow-left'
 import { IconCheck } from './icon-check'
+import { IconDarkTheme } from './icon-dark-theme'
 import { IconError } from './icon-error'
 import { IconEye } from './icon-eye'
 import { IconEyeOff } from './icon-eye-off'
 import { IconKey } from './icon-key'
+import { IconLightTheme } from './icon-light-theme'
 import { IconLoading } from './icon-loading'
 import { IconMail } from './icon-mail'
+import { IconSystemTheme } from './icon-system-theme'
 import { IconUser } from './icon-user'
 
 <Meta title="Iconography" />
@@ -17,12 +20,15 @@ import { IconUser } from './icon-user'
   {[
     IconArrowLeft,
     IconCheck,
+    IconDarkTheme,
     IconError,
     IconEye,
     IconEyeOff,
     IconKey,
+    IconLightTheme,
     IconLoading,
     IconMail,
+    IconSystemTheme,
     IconUser,
   ].map((Icon) => (
     <IconItem name={Icon.displayName}>

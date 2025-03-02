@@ -382,6 +382,7 @@
 
   /* Widths */
   --width-xxs: 20rem; /* 320px */
+  --width-xsm: 22.5rem; /* 360px */
   --width-xs: 24rem; /* 384px */
   --width-sm: 30rem; /* 480px */
   --width-md: 35rem; /* 560px */
@@ -626,6 +627,240 @@
   --color-button-tertiary-color-fg: var(--color-brand-400);
   --color-button-tertiary-color-fg_hover: var(--color-brand-200);
   --color-button-tertiary-color-bg_hover: var(--color-brand-950);
+}
+
+/*
+  TODO: dark theme variables are duplicated to enable theme switching
+   based on the prefers-color-scheme media query when JavaScript is disabled.
+   Can be refactored using SASS variables and mixins for better maintainability,
+   or needed to explore other, more efficient approaches.
+*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Gray (dark mode) */
+    --color-gray-25: #FAFAFA;
+    --color-gray-50: #F7F7F7;
+    --color-gray-100: #F0F0F1;
+    --color-gray-200: #ECECED;
+    --color-gray-300: #CECFD2;
+    --color-gray-400: #94979C;
+    --color-gray-500: #85888E;
+    --color-gray-600: #61656C;
+    --color-gray-700: #373A41;
+    --color-gray-800: #22262F;
+    --color-gray-900: #13161B;
+    --color-gray-950: #0C0E12;
+
+    /* Text Color */
+
+    /* Primary text such as page headings. */
+    --color-text-primary: var(--color-gray-50);
+    --color-text-primary_on-brand: var(--color-gray-50);
+
+    /* Secondary text such as labels and section headings. */
+    --color-text-secondary: var(--color-gray-300);
+    --color-text-secondary_hover: var(--color-gray-200);
+    --color-text-secondary_on-brand: var(--color-gray-300);
+
+    /* Tertiary test such as supporting text and paragraph text. */
+    --color-text-tertiary: var(--color-gray-400);
+    --color-text-tertiary_hover: var(--color-gray-300);
+    --color-text-tertiary_on-brand: var(--color-brand-400);
+
+    /* Quaternary text for more subtle and lower-contrast text, such as footer column headings. */
+    --color-text-quaternary: var(--color-gray-400);
+    --color-text-quaternary_on-brand: var(--color-brand-400);
+
+    /* This text is always white, regardless of the mode. */
+    --color-text-white: var(--color-white);
+
+    /* Default color for disabled text such as disabled input fields or buttons.
+    This can be changed to gray-400, but gray-500 is higher contrast and more accessible. */
+    --color-text-disabled: var(--color-gray-500);
+
+    /* Default color for placeholder text such as input field placeholders.
+    This can be changed to gray-400, but gray-500 is more accessible because it is higher contrast. */
+    --color-text-placeholder: var(--color-gray-400);
+    --color-text-placeholder_subtle: var(--color-gray-700);
+
+    /* Primary brand text useful for headings (e.g. cards in pricing page headers). */
+    --color-text-brand-primary: var(--color-gray-50);
+
+    /* Secondary brand text for accented text and highlights (e.g. subheadings in blog post cards). */
+    --color-text-brand-secondary: var(--color-gray-300);
+
+    /* Tertiary brand text for lighter accented text and highlights (e.g. numbers in metric cards). */
+    --color-text-brand-tertiary: var(--color-gray-400);
+    --color-text-brand-tertiary_alt: var(--color-gray-50);
+
+    /* Default error state semantic color. */
+    --color-text-error-primary: var(--color-error-400);
+
+    /* Default warning state semantic color. */
+    --color-text-warning-primary: var(--color-warning-400);
+
+    /* Default success state semantic text color. */
+    --color-text-success-primary: var(--color-success-400);
+
+    /* Border color */
+
+    /* High contrast borders. These are used for components such as input fields, button groups, and checkboxes. */
+    --color-border-primary: var(--color-gray-700);
+
+    /* Medium contrast borders. This is the most commonly used border color and is the default for most components (such as file uploaders), cards (such as tables), and content dividers.*/
+    --color-border-secondary: var(--color-gray-800);
+
+    /* Low contrast borders useful for very subtle dividers adn borders such as line and bar chart axis dividers. */
+    --color-border-tertiary: var(--color-gray-800);
+
+    /* Default disabled border color for disabled states in components such as input fields and checkboxes. */
+    --color-border-disabled: var(--color-gray-700);
+    --color-border-disabled_subtle: var(--color-gray-800);
+
+    /* Default brand border color. Useful for active states in components such as input fields. */
+    --color-border-brand: var(--color-brand-400);
+    --color-border-brand_alt: var(--color-gray-700);
+
+    /* Default error state semantic border color. Useful for error states in components such as input fields and file uploaders. */
+    --color-border-error: var(--color-error-400);
+    --color-border-error_subtle: var(--color-error-400);
+
+    /* Foreground color */
+
+    /* Highest contrast non-text foreground elements such as icons. */
+    --color-fg-primary: var(--color-white);
+
+    /* High contrast non-text foreground elements such as icons. */
+    --color-fg-secondary: var(--color-gray-300);
+    --color-fg-secondary_hover: var(--color-gray-200);
+
+    /* Medium contrast non-text foreground elements such as icons. */
+    --color-fg-tertiary: var(--color-brand-400);
+    --color-fg-tertiary_hover: var(--color-brand-300);
+
+    /* Medium-low contrast non-text foreground elements such as icons. */
+    --color-fg-quaternary: var(--color-gray-400);
+    --color-fg-quaternary_hover: var(--color-gray-300);
+
+    /* Low contrast non-text foreground elements such as help icons. */
+    --color-fg-quinary: var(--color-gray-500);
+    --color-fg-quinary_hover: var(--color-gray-400);
+
+    /* Lowest contrast non-text foreground elements such as breadcrumb divider icons and vector map. Used very sparingly. */
+    --color-fg-senary: var(--color-gray-600);
+
+    /* Foreground elements that are always white, regardless of the mode. */
+    --color-fg-white: var(--color-white);
+
+    /* Default color for disabled non-text elements such as icons in disabled button ground buttons and input dropdown menu items. */
+    --color-fg-disabled: var(--color-gray-500);
+
+    /* Background color */
+
+    /* The primary background color used across all layouts and components. */
+    --color-bg-primary: var(--color-gray-950);
+    --color-bg-primary_alt: var(--color-gray-900);
+    --color-bg-primary_hover: var(--color-gray-800);
+
+    /* The primary dark background color used across layouts and components. */
+    --color-bg-primary-solid: var(--color-gray-900);
+
+    /* The secondary background color used to create contrast against white background, such as website section backgrounds. */
+    --color-bg-secondary: var(--color-gray-950);
+    --color-bg-secondary_alt: var(--color-gray-950);
+    --color-bg-secondary_hover: var(--color-gray-800);
+    --color-bg-secondary_subtle: var(--color-gray-900);
+
+    /* The secondary dark background oclor used across layouts and components. */
+    --color-bg-secondary-solid: var(--color-gray-600);
+
+    /* The tertiary background color used to create contrast against light backgrounds such as toggles. */
+    --color-bg-tertiary: var(--color-gray-800);
+
+    /* The quaternary background color used to create contrast against light background, such as sliders and progress bars. */
+    --color-bg-quaternary: var(--color-gray-700);
+
+    /* Default active background color for components such as selected meny items in input dropdowns. */
+    --color-bg-active: var(--color-gray-800);
+
+    /* Default disabled background color for components such as disabled primary buttons and toggles. */
+    --color-bg-disabled: var(--color-gray-700);
+    --color-bg-disabled_subtle: var(--color-gray-900);
+
+    /* Default background color for background overlays. */
+    --color-bg-overlay: var(--color-gray-800);
+
+    /* The primary brand background color. Useful for components such as check icons. */
+    --color-bg-brand-primary: var(--color-brand-500);
+    --color-bg-brand-primary_alt: var(--color-gray-800);
+
+    /* The secondary brand background color. Useful for components such as featured icons. */
+    --color-bg-brand-secondary: var(--color-brand-600);
+
+    /* Default solid (dark) brand background color. */
+    --color-bg-brand-solid: var(--color-brand-600);
+    --color-bg-brand-solid_hover: var(--color-brand-500);
+
+    /* This is the default dark brand color background used for website sections such as CTA sections. */
+    --color-bg-brand-section: var(--color-gray-800);
+    --color-bg-brand-section_subtle: var(--color-gray-950);
+
+    /* Primary error state background color for components. */
+    --color-bg-error-primary: var(--color-black);
+
+    /* Secondary error state background color for components such as featured icons. */
+    --color-bg-error-secondary: var(--color-error-600);
+
+    /* Default solid (dark error state background color for components such as featured icons and metric items. */
+    --color-bg-error-solid: var(--color-error-600);
+
+    /* Primary warning state background color for components. */
+    --color-bg-warning-primary: var(--color-black);
+
+    /* Secondary warning state background color for components such as featured icons. */
+    --color-bg-warning-secondary: var(--color-warning-600);
+
+    /* Default solid (dark) warning state background color for components such as featured icons. */
+    --color-bg-warning-solid: var(--color-warning-600);
+
+    /* Primary success state background color for components. */
+    --color-bg-success-primary: var(--color-success-500);
+
+    /* Secondary success state background color for components such as featured icons. */
+    --color-bg-success-secondary: var(--color-success-600);
+
+    /* Default solid (dark) success state background color for components such as featured icons and metric items. */
+    --color-bg-success-solid: var(--color-success-600);
+
+    /* Button Colors */
+
+    /* Primary */
+    --color-button-primary-bg: var(--color-brand-600);
+    --color-button-primary-bg_hover: var(--color-brand-700);
+    --color-button-primary_fg: var(--color-white);
+
+    /* Secondary Gray */
+    --color-button-secondary-bg: transparent;
+    --color-button-secondary-bg_hover: var(--color-bg-secondary_hover);
+    --color-button-secondary-fg: var(--color-fg-secondary);
+    --color-button-secondary-border: var(--color-border-primary);
+
+    /* Secondary Color */
+    --color-button-secondary-color-bg: transparent;
+    --color-button-secondary-color-bg_hover: var(--color-brand-950);
+    --color-button-secondary-color-fg: var(--color-text-brand-secondary);
+    --color-button-secondary-color-border: var(--color-brand-700);
+
+    /* Tertiary */
+    --color-button-tertiary-fg: var(--color-gray-300);
+    --color-button-tertiary-fg_hover: var(--color-gray-200);
+    --color-button-tertiary-bg_hover: var(--color-gray-800);
+
+    /* Tertiary Color */
+    --color-button-tertiary-color-fg: var(--color-brand-400);
+    --color-button-tertiary-color-fg_hover: var(--color-brand-200);
+    --color-button-tertiary-color-bg_hover: var(--color-brand-950);
+  }
 }
 
 html,

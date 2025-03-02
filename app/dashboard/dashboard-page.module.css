@@ -1,0 +1,25 @@
+.container {
+  max-width: var(--width-xsm);
+  overflow: hidden;
+  padding-top: var(--spacing-4xl);
+  padding-bottom: var(--spacing-4xl);
+}
+
+.heading {
+  text-align: center;
+  margin-top: var(--spacing-3xl);
+}
+
+.description {
+  color: var(--color-text-tertiary);
+  text-align: center;
+  margin-top: var(--spacing-md);
+}
+
+.description strong {
+  color: var(--color-text-brand-primary);
+}
+
+.signOutButton {
+  margin-top: var(--spacing-4xl);
+}

@@ -1,4 +1,4 @@
-import { GridBackground } from '@/components/grid-background'
+import { GridBackground } from './grid-background'
 import styles from './icon-with-grid-background.module.css'
 import { ComponentPropsWithRef, FC, ReactNode } from 'react'
 

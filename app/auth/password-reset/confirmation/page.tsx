@@ -1,4 +1,4 @@
-import { ResendPasswordResetButton } from '@/app/auth/password-reset/confirmation/resend-password-reset-button'
+import { ResendPasswordResetButton } from '@/components/password-reset/resend-password-reset-button'
 import { FC } from 'react'
 
 type Props = {

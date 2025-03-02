@@ -4,7 +4,7 @@ import 'server-only'
 import { emailPasswordSchema } from '@/lib/auth/validation/email-password-schema'
 import { redirect } from 'next/navigation'
 import { isUserRegisteredByEmail, processPendingUserSignUp } from '@/lib/auth/utils/auth-utils'
-import { AuthFormState } from '@/app/auth/auth-form'
+import { AuthFormState } from '@/components/auth-form'
 
 async function signUpAction(_: AuthFormState, formData: FormData): Promise<AuthFormState> {
   const nextState = {
@@ -35,7 +35,7 @@ async function signUpAction(_: AuthFormState, formData: FormData): Promise<AuthF
     await processPendingUserSignUp(email, password)
   } catch (error) {
     console.error('Error during sign-up process:', error)
-    nextState.globalError = 'An unexpected error occurred. Please try again later.'
+    nextState.globalError = 'An unexpected error occurred.'
 
     return nextState
   }

@@ -6,6 +6,7 @@ import {
   ResendConfirmationEmailFormState,
 } from '@/lib/auth/actions/resend-confirmation-email-action'
 import { useCountdown } from '@/lib/hooks/use-countdown'
+import { Button } from '@/components/ui/button'
 
 type Props = {
   email: string
@@ -23,13 +24,15 @@ const ResendConfirmationEmailButton: FC<Props> = ({ email }) => {
     <>
       <form action={formAction}>
         <input type={'hidden'} name={'email'} value={email} />
-        <button
+        <Button
+          size={'lg'}
           data-testid={'resend-confirmation-email-button'}
           type={'submit'}
+          loading={isSubmitting}
           disabled={isSubmitting || rateLimiterCountdownState?.isCounting}
         >
           {isSubmitting ? 'Please wait...' : 'Resend Confirmation'}
-        </button>
+        </Button>
       </form>
       {state.emailSent && <p>Confirmation email was sent!</p>}
       {rateLimiterCountdownState && rateLimiterCountdownState.secondsRemaining > 0 && (

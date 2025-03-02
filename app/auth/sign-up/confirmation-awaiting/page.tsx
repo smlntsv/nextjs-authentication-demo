@@ -1,5 +1,7 @@
-import { ResendConfirmationEmailButton } from '@/app/auth/sign-up/confirmation-awaiting/resend-confirmation-button'
+import { ResendConfirmationEmailButton } from '@/components/resend-confirmation-button'
 import { FC } from 'react'
+import { Heading } from '@/components/ui/typography/heading'
+import { Container } from '@/components/ui/container'
 
 // NOTE: Email query parameter check implemented in middleware.ts
 
@@ -11,8 +13,10 @@ const ConfirmationAwaitingPage: FC<Props> = async ({ searchParams }) => {
   const email = (await searchParams).email
 
   return (
-    <div>
-      <h1>You&#39;re Almost There!</h1>
+    <Container centered style={{ maxWidth: '320px' }}>
+      <Heading size={'sm'} weight={'semibold'}>
+        Check Your Email
+      </Heading>
       <p>
         Confirmation email was sent to <strong>{email}</strong>. Please check your inbox and click
         the link to verify your email address.
@@ -22,7 +26,7 @@ const ConfirmationAwaitingPage: FC<Props> = async ({ searchParams }) => {
         confirmation email.
       </p>
       <ResendConfirmationEmailButton email={email} />
-    </div>
+    </Container>
   )
 }
 

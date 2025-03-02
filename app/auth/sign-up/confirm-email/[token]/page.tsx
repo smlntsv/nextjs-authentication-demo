@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { completeSignUpProcess, isEmailConfirmationTokenValid } from '@/lib/auth/utils/auth-utils'
-import { InvalidTokenMessage } from '@/app/auth/sign-up/confirm-email/[token]/invalid-token-message'
-import { UnrecoverableErrorMessage } from '@/app/auth/sign-up/confirm-email/[token]/unrecoverable-error-message'
-import { SuccessMessage } from '@/app/auth/sign-up/confirm-email/[token]/success-message'
+import { InvalidTokenMessage } from '@/components/sign-up/invalid-token-message'
+import { UnrecoverableErrorMessage } from '@/components/sign-up/unrecoverable-error-message'
+import { SuccessMessage } from '@/components/sign-up/success-message'
 
 type Props = {
   params: Promise<{ token: string }>

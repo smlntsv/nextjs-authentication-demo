@@ -5,7 +5,7 @@ import { emailPasswordSchema } from '@/lib/auth/validation/email-password-schema
 import { redirect } from 'next/navigation'
 import { isUserPasswordValid, isUserRegisteredByEmail } from '@/lib/auth/utils/auth-utils'
 import { createSessionByEmail } from '@/lib/auth/session'
-import { AuthFormState } from '@/app/auth/auth-form'
+import { AuthFormState } from '@/components/auth-form'
 import { createRateLimiter } from '@/lib/rate-limiter'
 
 const checkSignInRateLimiter = createRateLimiter({
@@ -61,7 +61,7 @@ async function signInAction(_: AuthFormState, formData: FormData): Promise<AuthF
     }
   } catch (error) {
     console.error('Error during sign-in process: ', error)
-    nextState.globalError = 'An unexpected error occurred. Please try again later.'
+    nextState.globalError = 'An unexpected error occurred.'
 
     return nextState
   }

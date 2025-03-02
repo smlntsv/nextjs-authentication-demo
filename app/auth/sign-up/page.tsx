@@ -1,4 +1,4 @@
-import { AuthForm } from '@/app/auth/auth-form'
+import { AuthForm } from '@/components/auth-form'
 import { signUpAction } from '@/lib/auth/actions/sign-up-action'
 import Link from 'next/link'
 

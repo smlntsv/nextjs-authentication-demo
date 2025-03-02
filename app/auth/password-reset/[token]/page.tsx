@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { isPasswordResetTokenValid } from '@/lib/auth/utils/auth-utils'
-import { InvalidPasswordResetTokenMessage } from '@/app/auth/password-reset/[token]/invalid-password-reset-token-message'
-import { SetNewPasswordForm } from '@/app/auth/password-reset/[token]/set-new-password-form'
+import { InvalidPasswordResetTokenMessage } from '@/components/password-reset/invalid-password-reset-token-message'
+import { SetNewPasswordForm } from '@/components/password-reset/set-new-password-form'
 
 type Props = {
   params: Promise<{ token: string }>

@@ -66,7 +66,7 @@ async function setNewPasswordAction(
     await sendPasswordResetSuccessEmail(email, signInURL.toString())
   } catch (error) {
     console.error('Failed to set new password: ', error)
-    nextState.globalError = 'An unexpected error occurred. Please try again later.'
+    nextState.globalError = 'An unexpected error occurred.'
 
     return nextState
   }

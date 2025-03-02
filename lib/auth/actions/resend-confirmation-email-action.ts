@@ -63,7 +63,7 @@ async function resendConfirmationEmailAction(
     nextState.emailSent = true
   } catch (error) {
     console.error('Resend confirmation email failed: ', error)
-    nextState.globalError = 'An unexpected error occurred. Please try again later.'
+    nextState.globalError = 'An unexpected error occurred.'
   }
 
   return nextState

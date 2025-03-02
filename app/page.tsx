@@ -1,6 +1,6 @@
 import styles from './page.module.css'
 import Link from 'next/link'
-import { ThemeSwitcher } from '@/components/theme-switcher'
+import { ThemeSwitcher } from '@/components/theming/theme-switcher'
 
 export default function Home() {
   return (

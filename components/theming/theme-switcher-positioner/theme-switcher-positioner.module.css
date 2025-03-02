@@ -1,0 +1,16 @@
+.wrapper {
+  position: relative;
+}
+
+.inner {
+  position: absolute;
+  top: var(--spacing-2xl);
+  right: var(--spacing-2xl);
+}
+
+@media (max-width: 320px) {
+  .inner {
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+  }
+}

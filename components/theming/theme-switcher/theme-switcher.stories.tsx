@@ -12,7 +12,7 @@ type Story = StoryObj<typeof ThemeSwitcher>
 
 export const Default: Story = {
   render: () => (
-    <Container centered style={{ background: 'var(--color-background)' }}>
+    <Container centered style={{ background: 'var(--color-bg-primary)' }}>
       <ThemeProvider>
         <ThemeSwitcher />
       </ThemeProvider>

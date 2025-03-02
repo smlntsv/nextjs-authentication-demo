@@ -30,6 +30,10 @@ const ThemeSwitcher: FC = () => {
     })
   }
 
+  if (!isMounted) {
+    return null
+  }
+
   const Icon = isMounted ? themeIconMap[theme as Theme] : IconSystemTheme
 
   const ariaLabel = !isMounted

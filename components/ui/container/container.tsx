@@ -2,9 +2,17 @@ import { ComponentPropsWithRef, FC } from 'react'
 import { clsx } from 'clsx'
 import styles from './container.module.css'
 
-const Container: FC<ComponentPropsWithRef<'main'>> = ({ ref, children, className, ...rest }) => {
+interface ContainerProps extends ComponentPropsWithRef<'main'> {
+  centered?: boolean
+}
+
+const Container: FC<ContainerProps> = ({ ref, children, className, centered, ...rest }) => {
   return (
-    <main ref={ref} className={clsx(styles.container, className)} {...rest}>
+    <main
+      ref={ref}
+      className={clsx(styles.container, centered && styles.centered, className)}
+      {...rest}
+    >
       {children}
     </main>
   )

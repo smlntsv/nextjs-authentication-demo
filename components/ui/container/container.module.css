@@ -1,9 +1,17 @@
 .container {
+  display: flex;
+  flex-direction: column;
   padding-left: var(--container-padding-modile);
   padding-right: var(--container-padding-modile);
   max-width: var(--container-max-width-desktop);
   margin-left: auto;
   margin-right: auto;
+}
+
+.centered {
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 @media (min-width: 48rem) {

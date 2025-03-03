@@ -1,9 +1,9 @@
 import { FC, SVGProps } from 'react'
 
-const IconArrowLeft: FC<SVGProps<SVGSVGElement>> = (props) => (
+const IconArrowRight: FC<SVGProps<SVGSVGElement>> = (props) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
     <path
-      d="M12 19L5 12M5 12L12 5M5 12H19"
+      d="M5 12H19M19 12L12 5M19 12L12 19"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
@@ -12,6 +12,6 @@ const IconArrowLeft: FC<SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 )
 
-IconArrowLeft.displayName = 'Icon Arrow Left'
+IconArrowRight.displayName = 'Icon Arrow Right'
 
-export { IconArrowLeft }
+export { IconArrowRight }

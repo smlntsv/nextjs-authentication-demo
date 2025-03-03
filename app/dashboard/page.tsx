@@ -1,11 +1,9 @@
 import { SignOutButton } from '@/components/sign-out-button'
 import { getAuthenticatedUser } from '@/lib/auth/session'
-import { Container } from '@/components/ui/container'
-import { Heading } from '@/components/ui/typography/heading'
-import { Text } from '@/components/ui/typography/text'
-import { IconWithGridBackground } from '@/components/icon-with-grid-background'
-import styles from './dashboard-page.module.css'
 import { IconUser } from '@/components/icons/icon-user'
+import { Card, CardHeading, CardText } from '@/components/card/card'
+import styles from './page.module.css'
+import { Container } from '@/components/ui/container'
 
 // If removed it produce https://nextjs.org/docs/messages/dynamic-server-error
 export const dynamic = 'force-dynamic'
@@ -18,16 +16,15 @@ const DashboardPage = async () => {
   }
 
   return (
-    <Container centered className={styles.container}>
-      <IconWithGridBackground icon={<IconUser />} />
-      <Heading className={styles.heading} size={'sm'} weight={'semibold'}>
-        Welcome Back
-      </Heading>
-      <Text className={styles.description}>
-        You have successfully logged in as <br />
-        <strong>{user.email}</strong>
-      </Text>
-      <SignOutButton className={styles.signOutButton} />
+    <Container centered>
+      <Card icon={<IconUser />}>
+        <CardHeading>Welcome Back</CardHeading>
+        <CardText>
+          You have successfully logged in as <br />
+          <strong>{user.email}</strong>
+        </CardText>
+        <SignOutButton className={styles.signOutButton} />
+      </Card>
     </Container>
   )
 }

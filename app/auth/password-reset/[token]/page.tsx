@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { isPasswordResetTokenValid } from '@/lib/auth/utils/auth-utils'
-import { InvalidPasswordResetTokenMessage } from '@/components/password-reset/invalid-password-reset-token-message'
+import { InvalidPasswordResetTokenPage } from '@/components/password-reset/invalid-password-reset-token-page'
 import { SetNewPasswordForm } from '@/components/password-reset/set-new-password-form'
 
 type Props = {
@@ -12,7 +12,7 @@ const SetNewPasswordPage: FC<Props> = async ({ params }) => {
   const isTokenValid = await isPasswordResetTokenValid(token)
 
   if (!isTokenValid) {
-    return <InvalidPasswordResetTokenMessage />
+    return <InvalidPasswordResetTokenPage />
   }
 
   return <SetNewPasswordForm passwordResetToken={token} />

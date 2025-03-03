@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { EmailGlobalStyle } from '@/lib/emails/components/email-global-style'
 
 type PasswordResetRequestProps = {
   projectName: string
@@ -13,39 +14,28 @@ const PasswordResetRequest: FC<PasswordResetRequestProps> = ({
 }) => {
   return (
     <html lang="en">
+      {/* eslint-disable-next-line @next/next/no-head-element */}
+      <head>
+        <title>Password Reset Request</title>
+        <EmailGlobalStyle />
+      </head>
       <body>
-        <main>
-          <p>
-            <strong>Hello {userEmail},</strong>
-          </p>
-          <p>
-            We received a request to reset your password. If you initiated this request, click the
-            button below to set a new password:
-          </p>
-          <a
-            href={setNewPasswordUrl}
-            style={{
-              display: 'inline-block',
-              backgroundColor: '#007bff',
-              color: '#ffffff',
-              textDecoration: 'none',
-              padding: '12px 24px',
-              fontSize: '16px',
-              borderRadius: '5px',
-              marginTop: '20px',
-            }}
-          >
-            Set new password
-          </a>
-          <p>
-            If you did not request this, you can ignore this email, and your password will remain
-            unchanged.
-          </p>
-          <p>Regards,</p>
-          <p>
-            The <strong>{projectName}</strong> Team
-          </p>
-        </main>
+        <h1>🔑 Reset Your Password</h1>
+        <p>
+          Hello <strong>{userEmail}</strong>,<br />
+          <br /> We received a request to reset your password.
+          <br /> If you made this request, click the button below to set a new password:
+        </p>
+        <a href={setNewPasswordUrl}>Set New Password</a>
+        <p>
+          If you did not request this, please ignore this email. Your password will remain
+          unchanged.
+        </p>
+        <p>
+          Best Regards,
+          <br />
+          The {projectName} Team
+        </p>
       </body>
     </html>
   )

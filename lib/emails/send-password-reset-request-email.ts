@@ -8,7 +8,7 @@ async function sendPasswordResetRequestEmail(
 ): Promise<boolean> {
   const projectName = process.env.PROJECT_NAME ?? 'Project Name'
   const userEmail = recipient
-  const subject = `[${projectName}] Reset Your Password`
+  const subject = `[${projectName}] 🔑 Reset Your Password`
   const emailHtml = await renderEmailTemplateToHtml(PasswordResetRequest, {
     projectName,
     userEmail,

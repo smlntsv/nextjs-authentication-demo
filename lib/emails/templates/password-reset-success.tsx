@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { EmailGlobalStyle } from '@/lib/emails/components/email-global-style'
 
 type PasswordResetSuccessProps = {
   projectName: string
@@ -13,37 +14,27 @@ const PasswordResetSuccess: FC<PasswordResetSuccessProps> = ({
 }) => {
   return (
     <html lang="en">
+      {/* eslint-disable-next-line @next/next/no-head-element */}
+      <head>
+        <title>Password Reset Successful</title>
+        <EmailGlobalStyle />
+      </head>
       <body>
-        <main>
-          x
-          <p>
-            <strong>Hello {userEmail},</strong>
-          </p>
-          <p>
-            ✅ Your password has been successfully updated. You can now log in using your new
-            password.
-          </p>
-          <a
-            href={signInUrl}
-            style={{
-              display: 'inline-block',
-              backgroundColor: '#007bff',
-              color: '#ffffff',
-              textDecoration: 'none',
-              padding: '12px 24px',
-              fontSize: '16px',
-              borderRadius: '5px',
-              marginTop: '20px',
-            }}
-          >
-            Go to Login Page
-          </a>
-          <p>If you did not request this password change, please contact our support team.</p>
-          <p>Stay secure,</p>
-          <p>
-            The <strong>{projectName}</strong> Team
-          </p>
-        </main>
+        <h1>🔒 Password Updated</h1>
+        <p>
+          Hello <strong>{userEmail}</strong>,<br />
+          <br /> Your password has been successfully updated.
+          <br /> You can now log in using your new password.
+        </p>
+        <a href={signInUrl}>Go to Login</a>
+        <p>
+          If you did not request this password change, please contact our support team immediately.
+        </p>
+        <p>
+          Stay secure,
+          <br />
+          The {projectName} Team
+        </p>
       </body>
     </html>
   )

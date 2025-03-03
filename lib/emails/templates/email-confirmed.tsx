@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { EmailGlobalStyle } from '@/lib/emails/components/email-global-style'
 
 type EmailConfirmedProps = {
   projectName: string
@@ -9,36 +10,25 @@ type EmailConfirmedProps = {
 const EmailConfirmed: FC<EmailConfirmedProps> = ({ projectName, userEmail, signInUrl }) => {
   return (
     <html lang="en">
+      {/* eslint-disable-next-line @next/next/no-head-element */}
+      <head>
+        <title>Email Confirmed</title>
+        <EmailGlobalStyle />
+      </head>
       <body>
-        <main>
-          <p>
-            <strong>Hello {userEmail},</strong>
-          </p>
-          <p>
-            <strong>🎉 Welcome To {projectName}!</strong> Your registration is now complete.
-          </p>
-          <p>You can log in using your email and password.</p>
-          <a
-            href={signInUrl}
-            style={{
-              display: 'inline-block',
-              backgroundColor: '#007bff',
-              color: '#ffffff',
-              textDecoration: 'none',
-              padding: '12px 24px',
-              fontSize: '16px',
-              borderRadius: '5px',
-              marginTop: '20px',
-            }}
-          >
-            Go to Login Page
-          </a>
-          <p>If you did not create this account, please contact support.</p>
-          <p>Regards,</p>
-          <p>
-            The <strong>{projectName}</strong> Team
-          </p>
-        </main>
+        <h1>🎉 Welcome To {projectName}</h1>
+        <p>
+          Hello <strong>{userEmail}</strong>,<br />
+          <br /> Your registration is now complete.
+          <br /> You can log in using your email and password.
+        </p>
+        <a href={signInUrl}>Go to Login</a>
+        <p>If you did not create this account, please contact our support team.</p>
+        <p>
+          Best regards,
+          <br />
+          The {projectName} Team
+        </p>
       </body>
     </html>
   )

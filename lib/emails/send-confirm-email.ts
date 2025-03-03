@@ -5,7 +5,7 @@ import { ConfirmEmail } from '@/lib/emails/templates/confirm-email'
 async function sendConfirmEmail(recipient: string, emailConfirmationUrl: string): Promise<boolean> {
   const projectName = process.env.PROJECT_NAME ?? 'Project Name'
   const userEmail = recipient
-  const subject = `[${projectName}] Confirm Your Email to Complete Registration`
+  const subject = `[${projectName}] 📧 Confirm Your Email to Complete Registration`
   const emailHtml = await renderEmailTemplateToHtml(ConfirmEmail, {
     projectName,
     userEmail,

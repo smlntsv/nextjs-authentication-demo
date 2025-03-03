@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { clsx } from 'clsx'
 import { Alert } from '@/components/alert'
 import styles from './resend-password-reset-button.module.css'
-import { useResendPasswordResetAlertConfigs } from '@/components/password-reset/use-resend-password-reset-alert-configs'
+import { useResendPasswordResetAlertConfigs } from './use-resend-password-reset-alert-configs'
 
 type Props = {
   email: string

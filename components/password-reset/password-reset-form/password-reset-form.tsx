@@ -4,22 +4,35 @@ import {
   requestPasswordResetLinkAction,
   RequestPasswordResetLinkState,
 } from '@/lib/auth/actions/request-password-reset-link-action'
-import { startTransition, useActionState, useCallback, useEffect, useState } from 'react'
+import {
+  ComponentProps,
+  FC,
+  startTransition,
+  useActionState,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import Link from 'next/link'
-import { useCountdown } from '@/lib/hooks/use-countdown'
 import {
   RequestPasswordResetData,
   requestPasswordResetSchema,
 } from '@/lib/auth/validation/request-password-reset-schema'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Alert } from '@/components/alert'
+import styles from './password-reset-form.module.css'
+import { usePasswordResetFormAlertConfigs } from './use-password-reset-form-alert-configs'
 
-const PasswordResetForm = () => {
+const PasswordResetForm: FC<ComponentProps<'div'>> = (props) => {
   const initialState: RequestPasswordResetLinkState = { fields: { email: '', redirect: 'true' } }
   const [state, formAction, isSubmitting] = useActionState<RequestPasswordResetLinkState, FormData>(
     requestPasswordResetLinkAction,
     initialState
   )
+
+  const alertConfigs = usePasswordResetFormAlertConfigs(state)
 
   const [validationErrors, setValidationErrors] = useState<RequestPasswordResetLinkState['errors']>(
     state.errors
@@ -29,8 +42,6 @@ const PasswordResetForm = () => {
     resolver: zodResolver(requestPasswordResetSchema),
     mode: 'onChange',
   })
-
-  const rateLimitState = useCountdown(state.rateLimit?.secondsRemaining ?? 0)
 
   // Handle react-hook-form validation errors
   useEffect(() => {
@@ -58,62 +69,29 @@ const PasswordResetForm = () => {
     [formAction]
   )
 
-  const renderValidationError = (
-    field: keyof NonNullable<RequestPasswordResetLinkState['errors']>
-  ) => {
-    if (!validationErrors) return
-
-    const errorMessage = validationErrors[field] ? validationErrors[field][0] : undefined
-    if (!errorMessage) return null
-
-    const id = `${field}-error`
-
-    return (
-      <div data-testid={id} id={id}>
-        <p style={{ color: 'red' }}>{errorMessage}</p>
-      </div>
-    )
-  }
-
-  const getAriaLabelBy = (field: keyof NonNullable<RequestPasswordResetLinkState['errors']>) => {
-    return validationErrors && validationErrors[field] ? `${field}-error` : undefined
-  }
-
   return (
-    <div>
-      <h1>Password Reset</h1>
-      {state.globalError && (
-        <div data-testid={'global-error'}>
-          <p style={{ color: 'red' }}>{state.globalError}</p>
-        </div>
-      )}
-      {rateLimitState && rateLimitState.secondsRemaining > 0 && (
-        <p data-testid={'rate-limiter-message'}>
-          Too many attempts. Please wait {rateLimitState.secondsRemaining} seconds.
-        </p>
-      )}
+    <div {...props}>
       <form
+        className={styles.form}
         data-testid={'reset-password-form'}
+        aria-describedby={alertConfigs.map(({ id }) => id).join(' ')}
         action={formAction}
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* Email */}
-        <div>
-          <label htmlFor={'email'}>Email</label>
-          <input
-            data-testid={'email-field'}
-            type={'email'}
-            id={'email'}
-            defaultValue={state.fields.email}
-            placeholder={'Enter your email address'}
-            disabled={isSubmitting}
-            aria-describedby={getAriaLabelBy('email')}
-            autoComplete={'email'}
-            {...register('email')}
-          />
-          {renderValidationError('email')}
-        </div>
+        <Input
+          data-testid={'email-field'}
+          type={'email'}
+          label={'Email'}
+          defaultValue={state.fields.email}
+          placeholder={'Enter your email address'}
+          disabled={isSubmitting}
+          autoComplete={'email'}
+          error={validationErrors?.email ? validationErrors.email[0] : undefined}
+          {...register('email')}
+        />
 
+        {/* Redirect (hidden) */}
         <input
           data-testid={'redirect-field'}
           type={'hidden'}
@@ -121,14 +99,29 @@ const PasswordResetForm = () => {
           {...register('redirect')}
         />
 
-        {/* Submit Button */}
-        <button data-testid={'reset-password-button'} type="submit" disabled={isSubmitting}>
+        <Button
+          className={styles.resetPasswordButton}
+          type={'submit'}
+          size={'lg'}
+          loading={isSubmitting}
+          disabled={isSubmitting || alertConfigs.some(({ preventsSubmit }) => preventsSubmit)}
+          data-testid={'reset-password-button'}
+        >
           Reset Password
-        </button>
+        </Button>
       </form>
-      <div>
-        <Link href={'/auth/sign-in'}>Sign In</Link>
-      </div>
+
+      {alertConfigs.map(({ id, type, text, ariaLive, testId }) => (
+        <Alert
+          key={id}
+          className={styles.alert}
+          id={id}
+          data-testid={testId}
+          type={type}
+          text={text}
+          aria-live={ariaLive}
+        />
+      ))}
     </div>
   )
 }

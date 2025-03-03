@@ -4,8 +4,6 @@
   gap: var(--spacing-md);
   border-radius: var(--radius-xl);
   padding: var(--spacing-xl);
-  margin-top: var(--spacing-xl);
-  margin-bottom: var(--spacing-xl);
 }
 
 .successIcon, .warningIcon, .errorIcon {

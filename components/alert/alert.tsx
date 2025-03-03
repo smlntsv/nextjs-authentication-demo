@@ -36,9 +36,10 @@ type AuthFormErrorProps = ComponentPropsWithRef<'div'> &
   MotionProps & {
     type?: AlertType
     text?: string
+    className?: string
   }
 
-const Alert: FC<AuthFormErrorProps> = ({ ref, type = 'success', text, ...rest }) => {
+const Alert: FC<AuthFormErrorProps> = ({ ref, type = 'success', text, className, ...rest }) => {
   const Icon = iconsMap[type]
 
   return (
@@ -51,7 +52,7 @@ const Alert: FC<AuthFormErrorProps> = ({ ref, type = 'success', text, ...rest })
           transition={{ duration: 0.25 }}
           ref={ref}
           role={'alert'}
-          className={clsx(styles.container, stylesMap[type].container)}
+          className={clsx(styles.container, stylesMap[type].container, className)}
           {...rest}
         >
           <Icon className={stylesMap[type].icon} />
@@ -64,4 +65,5 @@ const Alert: FC<AuthFormErrorProps> = ({ ref, type = 'success', text, ...rest })
   )
 }
 
+export type { AlertType }
 export { Alert }

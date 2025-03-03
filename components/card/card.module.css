@@ -1,6 +1,9 @@
-.container {
+.innerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   max-width: var(--width-xsm);
-  overflow: hidden;
+  width: 100%;
   padding-top: var(--spacing-4xl);
   padding-bottom: var(--spacing-4xl);
 }
@@ -18,8 +21,4 @@
 
 .description strong {
   color: var(--color-text-brand-primary);
-}
-
-.signOutButton {
-  margin-top: var(--spacing-4xl);
 }

@@ -4,18 +4,21 @@ import 'server-only'
 import { createTransport, SentMessageInfo } from 'nodemailer'
 import { Address } from 'nodemailer/lib/mailer'
 
+const sender: Address = {
+  name: process.env.SMTP_FROM_NAME ?? 'Sender Name',
+  address: process.env.SMTP_FROM_ADDRESS ?? 'sender@example.com',
+}
+
 const transporter = createTransport({
-  service: process.env.SMTP_SERVICE,
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: process.env.SMTP_ENCRYPTION === 'SSL',
+  requireTLS: process.env.SMTP_ENCRYPTION === 'TLS',
   auth: {
     user: process.env.SMTP_USERNAME,
     pass: process.env.SMTP_PASSWORD,
   },
 })
-
-const sender: Address = {
-  name: process.env.SMTP_FROM_NAME ?? 'Sender Name',
-  address: process.env.SMTP_FROM_ADDRESS ?? 'sender@example.com',
-}
 
 async function sendEmail(recipient: string, subject: string, emailHtml: string) {
   try {

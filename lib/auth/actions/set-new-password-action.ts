@@ -12,10 +12,12 @@ import { sendPasswordResetSuccessEmail } from '@/lib/emails/send-password-reset-
 
 export type SetNewPasswordState = {
   fields: {
+    email: string
     password: string
     passwordResetToken: string
   }
   errors?: {
+    email?: string[]
     password?: string[]
     passwordResetToken?: string[]
   }
@@ -28,6 +30,7 @@ async function setNewPasswordAction(
 ): Promise<SetNewPasswordState> {
   const nextState = {
     fields: {
+      email: formData.get('email'),
       password: formData.get('password'),
       passwordResetToken: formData.get('passwordResetToken'),
     },

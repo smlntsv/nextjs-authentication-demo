@@ -3,7 +3,7 @@ import { IconKey } from '@/components/icons/icon-key'
 import { PasswordResetForm } from '@/components/password-reset/password-reset-form'
 import { LinkButton } from '@/components/ui/button'
 import { IconArrowLeft } from '@/components/icons/icon-arrow-left'
-import { Card, CardHeading, CardText } from '@/components/card/card'
+import { Card, CardHeading, CardText } from '@/components/card'
 import styles from './page.module.css'
 
 const PasswordResetPage = () => {

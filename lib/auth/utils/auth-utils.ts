@@ -280,19 +280,27 @@ async function hashPasswordResetToken(token: string): Promise<string> {
   return makeSha256Hash(token)
 }
 
-async function isPasswordResetTokenValid(token: string): Promise<boolean> {
+async function getUserEmailByPasswordResetToken(token: string): Promise<string | null> {
   try {
     const hashedToken = await hashPasswordResetToken(token)
 
     const queryResult = await sql`
-        SELECT user_id FROM password_resets
-        WHERE token = ${hashedToken} AND is_used = FALSE AND expires_at > NOW();
+        SELECT users.email FROM users
+        INNER JOIN password_resets
+        ON users.id = password_resets.user_id
+        WHERE password_resets.token = ${hashedToken}
+          AND password_resets.is_used = FALSE
+          AND password_resets.expires_at > NOW();
     `
 
-    return queryResult.rows.length > 0
+    if (queryResult.rows.length === 0) {
+      return null
+    }
+
+    return queryResult.rows[0].email
   } catch (error) {
-    console.error('Unable to verify password reset token: ', error)
-    throw new Error('Failed to verify password reset token.')
+    console.error('Unable to get user email by password reset token: ', error)
+    throw new Error('Failed to get user email by password reset token.')
   }
 }
 
@@ -389,7 +397,7 @@ export {
   isUserPasswordValid,
   getUserByEmail,
   processPasswordResetLinkRequest,
-  isPasswordResetTokenValid,
+  getUserEmailByPasswordResetToken,
   getPasswordResetRecord,
   updateUserPassword,
   getUserById,

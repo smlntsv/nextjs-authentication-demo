@@ -72,7 +72,6 @@ const PasswordResetForm: FC<ComponentProps<'div'>> = (props) => {
   return (
     <div {...props}>
       <form
-        className={styles.form}
         data-testid={'reset-password-form'}
         aria-describedby={alertConfigs.map(({ id }) => id).join(' ')}
         action={formAction}

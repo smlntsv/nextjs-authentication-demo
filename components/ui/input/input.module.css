@@ -47,6 +47,7 @@
 }
 
 .inputBase:disabled {
+  cursor: not-allowed;
   outline-color: var(--color-border-disabled);
   color: var(--color-text-disabled);
   background-color: var(--color-bg-disabled_subtle);

@@ -65,6 +65,7 @@ const Input: FC<InputProps> = ({
         />
         {showPasswordToggle && (
           <button
+            type={'button'}
             className={clsx(styles.passwordVisibilityButton, error && styles.inputError)}
             onClick={togglePasswordVisibility}
             title={innerInputType === 'password' ? 'Show password' : 'Hide password'}

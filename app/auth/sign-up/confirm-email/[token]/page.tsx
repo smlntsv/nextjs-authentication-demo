@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { completeSignUpProcess, isEmailConfirmationTokenValid } from '@/lib/auth/utils/auth-utils'
-import { InvalidTokenMessage } from '@/components/sign-up/invalid-token-message'
-import { UnrecoverableErrorMessage } from '@/components/sign-up/unrecoverable-error-message'
-import { SuccessMessage } from '@/components/sign-up/success-message'
+import { RegistrationFailedPage } from '@/components/sign-up/registration-failed-page'
+import { RegistrationCompletePage } from '@/components/sign-up/registration-complete-page'
+import { InvalidConfirmationTokenPage } from '@/components/sign-up/invalid-confirmation-token-page'
 
 type Props = {
   params: Promise<{ token: string }>
@@ -14,16 +14,16 @@ const ConfirmEmailPage: FC<Props> = async ({ params }) => {
   const isTokenValid = await isEmailConfirmationTokenValid(token)
 
   if (!isTokenValid) {
-    return <InvalidTokenMessage />
+    return <InvalidConfirmationTokenPage />
   }
 
   const isComplete = await completeSignUpProcess(token)
 
   if (!isComplete) {
-    return <UnrecoverableErrorMessage />
+    return <RegistrationFailedPage />
   }
 
-  return <SuccessMessage />
+  return <RegistrationCompletePage />
 }
 
 export default ConfirmEmailPage

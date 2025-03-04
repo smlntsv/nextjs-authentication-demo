@@ -1,0 +1,7 @@
+.resendConfirmationButton {
+  margin-top: var(--spacing-4xl);
+}
+
+.backToLogInButton {
+  margin-top: var(--spacing-2xl);
+}

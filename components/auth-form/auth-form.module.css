@@ -1,0 +1,16 @@
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formField {
+  margin-top: var(--spacing-2xl);
+}
+
+.submitButton {
+  margin-top: var(--spacing-3xl);
+}
+
+.alert {
+  margin-top: var(--spacing-xl);
+}

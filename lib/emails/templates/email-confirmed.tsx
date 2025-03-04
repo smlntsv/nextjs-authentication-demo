@@ -22,7 +22,9 @@ const EmailConfirmed: FC<EmailConfirmedProps> = ({ projectName, userEmail, signI
           <br /> Your registration is now complete.
           <br /> You can log in using your email and password.
         </p>
-        <a href={signInUrl}>Go to Login</a>
+        <a className={'buttonLink'} href={signInUrl}>
+          Go to Login Page
+        </a>
         <p>If you did not create this account, please contact our support team.</p>
         <p>
           Best regards,

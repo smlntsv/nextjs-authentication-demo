@@ -23,7 +23,9 @@ const ConfirmEmail: FC<ConfirmEmailProps> = ({ projectName, userEmail, emailConf
           Thank you for signing up for <strong>{projectName}</strong>! <br />
           Please confirm your email address by clicking the button below:
         </p>
-        <a href={emailConfirmationUrl}>Confirm Email</a>
+        <a className={'buttonLink'} href={emailConfirmationUrl}>
+          Confirm Email
+        </a>
         <p>If you did not sign up for this account, please ignore this email.</p>
         <p>
           Best regards, <br />

@@ -26,7 +26,9 @@ const PasswordResetSuccess: FC<PasswordResetSuccessProps> = ({
           <br /> Your password has been successfully updated.
           <br /> You can now log in using your new password.
         </p>
-        <a href={signInUrl}>Go to Login</a>
+        <a className={'buttonLink'} href={signInUrl}>
+          Go to Login Page
+        </a>
         <p>
           If you did not request this password change, please contact our support team immediately.
         </p>

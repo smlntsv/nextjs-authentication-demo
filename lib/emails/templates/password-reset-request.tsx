@@ -26,7 +26,9 @@ const PasswordResetRequest: FC<PasswordResetRequestProps> = ({
           <br /> We received a request to reset your password.
           <br /> If you made this request, click the button below to set a new password:
         </p>
-        <a href={setNewPasswordUrl}>Set New Password</a>
+        <a className={'buttonLink'} href={setNewPasswordUrl}>
+          Set New Password
+        </a>
         <p>
           If you did not request this, please ignore this email. Your password will remain
           unchanged.

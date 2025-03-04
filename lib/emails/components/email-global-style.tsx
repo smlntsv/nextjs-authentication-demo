@@ -28,8 +28,8 @@ const EmailGlobalStyle = () => {
               letter-spacing: 0;
               color: #414651;
             }
-            
-            a {
+
+            a.buttonLink {
               font-size: 16px;
               font-weight: 600;
               line-height: 24px;
@@ -41,7 +41,7 @@ const EmailGlobalStyle = () => {
               padding: 10px 16px;
             }
             
-            a:hover {
+            a.buttonLink:hover {
               background-color: #6941C6;
             }
 

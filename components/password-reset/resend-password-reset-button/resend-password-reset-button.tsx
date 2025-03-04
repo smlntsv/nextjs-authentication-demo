@@ -10,6 +10,7 @@ import { clsx } from 'clsx'
 import { Alert } from '@/components/alert'
 import styles from './resend-password-reset-button.module.css'
 import { useResendPasswordResetAlertConfigs } from './use-resend-password-reset-alert-configs'
+import { useIsMounted } from '@/hooks/use-is-mounted'
 
 type Props = {
   email: string
@@ -21,6 +22,8 @@ const ResendPasswordResetButton: FC<Props> = ({ email, className }) => {
     requestPasswordResetLinkAction,
     { fields: { email, redirect: 'false' } }
   )
+
+  const isMounted = useIsMounted()
 
   const alertConfigs = useResendPasswordResetAlertConfigs(state)
 
@@ -34,7 +37,9 @@ const ResendPasswordResetButton: FC<Props> = ({ email, className }) => {
           data-testid={'resend-password-reset-link-button'}
           type={'submit'}
           loading={isSubmitting}
-          disabled={isSubmitting || alertConfigs.some(({ preventsSubmit }) => preventsSubmit)}
+          disabled={
+            isSubmitting || (isMounted && alertConfigs.some(({ preventsSubmit }) => preventsSubmit))
+          }
           aria-describedby={alertConfigs.map(({ id }) => id).join(' ')}
         >
           Resend Password Reset Link

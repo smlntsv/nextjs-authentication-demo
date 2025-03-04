@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Alert } from '@/components/alert'
 import { useAuthFormAlertConfig } from '@/components/auth-form/use-auth-form-alert-configs'
+import { useIsMounted } from '@/hooks/use-is-mounted'
 import styles from './auth-form.module.css'
 
 export type AuthFormState = {
@@ -51,6 +52,7 @@ const AuthForm: FC<Props> = ({ action, submitButtonText, passwordAutocomplete, c
     resolver: zodResolver(emailPasswordSchema),
     mode: 'onChange',
   })
+  const isMounted = useIsMounted()
 
   // Handle react-hook-form validation errors
   useEffect(() => {
@@ -90,7 +92,6 @@ const AuthForm: FC<Props> = ({ action, submitButtonText, passwordAutocomplete, c
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
-          data-testid={'auth-form-email'}
           type={'email'}
           label={'Email'}
           defaultValue={state.fields.email}
@@ -98,11 +99,12 @@ const AuthForm: FC<Props> = ({ action, submitButtonText, passwordAutocomplete, c
           disabled={isSubmitting}
           autoComplete={'email'}
           error={validationErrors?.email ? validationErrors.email[0] : undefined}
+          inputDataTestId={'auth-form-email'}
+          errorDataTestId={'auth-form-email-error'}
           {...register('email')}
         />
         <Input
           className={styles.formField}
-          data-testid={'auth-form-password'}
           type="password"
           label={'Password'}
           defaultValue={state.fields.password}
@@ -110,6 +112,8 @@ const AuthForm: FC<Props> = ({ action, submitButtonText, passwordAutocomplete, c
           disabled={isSubmitting}
           autoComplete={passwordAutocomplete}
           error={validationErrors?.password ? validationErrors.password[0] : undefined}
+          inputDataTestId={'auth-form-password'}
+          errorDataTestId={'auth-form-password-error'}
           {...register('password')}
         />
         <Button
@@ -117,7 +121,9 @@ const AuthForm: FC<Props> = ({ action, submitButtonText, passwordAutocomplete, c
           type={'submit'}
           size={'lg'}
           loading={isSubmitting}
-          disabled={isSubmitting || alertConfigs.some(({ preventsSubmit }) => preventsSubmit)}
+          disabled={
+            isSubmitting || (isMounted && alertConfigs.some(({ preventsSubmit }) => preventsSubmit))
+          }
           data-testid={'auth-form-submit-button'}
         >
           {submitButtonText}

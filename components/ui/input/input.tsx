@@ -20,12 +20,16 @@ interface InputProps extends ComponentPropsWithRef<'input'> {
   label?: string
   error?: string
   type?: InputType
+  inputDataTestId?: string
+  errorDataTestId?: string
 }
 
 const Input: FC<InputProps> = ({
   ref,
   variantSize = 'md',
   type = 'text',
+  inputDataTestId,
+  errorDataTestId,
   label,
   error,
   className,
@@ -61,6 +65,7 @@ const Input: FC<InputProps> = ({
           aria-required={rest.required ? 'true' : undefined}
           aria-invalid={!!error}
           aria-describedby={error ? errorId : undefined}
+          data-testid={inputDataTestId}
           {...rest}
         />
         {showPasswordToggle && (
@@ -84,6 +89,7 @@ const Input: FC<InputProps> = ({
             exit={{ y: -10 }}
             transition={{ duration: 0.2 }}
             className={styles.error}
+            data-testid={errorDataTestId}
           >
             {error}
           </motion.span>

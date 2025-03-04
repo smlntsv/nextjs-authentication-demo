@@ -10,6 +10,7 @@ import {
   createdUserEmails,
   createUniqueUser,
   ensureOnDashboard,
+  waitForAuth,
 } from '@/cypress/e2e/auth-form-utils'
 
 const signUpScenarios = [
@@ -74,7 +75,7 @@ describe('Sign Up Journey', () => {
         })
 
         it('should redirect to confirmation awaiting page after sign-up', () => {
-          attemptAuthentication(email, password)
+          waitForAuth(() => attemptAuthentication(email, password))
 
           cy.location('pathname').should('equal', '/auth/sign-up/confirmation-awaiting')
           cy.location('search').should('equal', `?email=${email}`)
@@ -101,13 +102,16 @@ describe('Sign Up Journey', () => {
           visit(`/auth/sign-up/confirmation-awaiting?email=${email}`)
           cy.getByDataId('resend-confirmation-email-button').should('exist')
 
-          cy.getByDataId('resend-confirmation-email-button').click()
-          cy.contains('Confirmation email was sent!')
+          waitForAuth(() => cy.getByDataId('resend-confirmation-email-button').click())
+
+          cy.contains('Confirmation email was sent again.')
         })
 
         it('should rate limit resends confirmation email clicks', () => {
           visit(`/auth/sign-up/confirmation-awaiting?email=${email}`)
-          cy.getByDataId('resend-confirmation-email-button').click()
+
+          waitForAuth(() => cy.getByDataId('resend-confirmation-email-button').click())
+
           cy.contains('Too many attempts. Please wait')
         })
 
@@ -136,7 +140,7 @@ describe('Sign Up Journey', () => {
             (result) => {
               const htmlBody = result as string | null
               expect(htmlBody).not.equal(null)
-              expect(htmlBody).contains('Your registration is now complete')
+              expect(htmlBody).contains('Your registration is now complete.')
               expect(htmlBody).contains('Go to Login Page')
             }
           )

@@ -46,6 +46,12 @@ function ensureOnDashboard() {
   cy.location('pathname').should('equal', '/dashboard')
 }
 
+function waitForAuth(fn: () => void) {
+  cy.intercept('POST', '**/auth/**').as('auth')
+  fn()
+  cy.wait('@auth')
+}
+
 export {
   clickSubmitButton,
   assertEmailErrorMessage,
@@ -56,4 +62,5 @@ export {
   createdUserEmails,
   createUniqueUser,
   ensureOnDashboard,
+  waitForAuth,
 }

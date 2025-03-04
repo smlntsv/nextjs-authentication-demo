@@ -1,7 +1,7 @@
 import { emailPasswordSchema } from '@/lib/auth/validation/email-password-schema'
 import { z } from 'zod'
 
-const setNewPasswordSchema = emailPasswordSchema.extend({
+const setNewPasswordSchema = emailPasswordSchema.pick({ password: true }).extend({
   passwordResetToken: z
     .string({
       required_error: 'Password reset token is required',

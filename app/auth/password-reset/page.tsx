@@ -10,7 +10,7 @@ const PasswordResetPage = () => {
   return (
     <Container centered>
       <Card icon={<IconKey />}>
-        <CardHeading>Forgot password?</CardHeading>
+        <CardHeading>Forgot Password?</CardHeading>
         <CardText>No worries, we&#39;ll send you reset instructions.</CardText>
         <PasswordResetForm className={styles.form} />
         <LinkButton

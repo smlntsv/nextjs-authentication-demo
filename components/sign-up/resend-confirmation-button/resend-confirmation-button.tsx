@@ -10,6 +10,7 @@ import { Alert } from '@/components/alert'
 import { useResendConfirmationEmailAlertConfigs } from '@/components/sign-up/resend-confirmation-button/use-resend-confirmation-button-alert-configs'
 import styles from '@/components/password-reset/resend-password-reset-button/resend-password-reset-button.module.css'
 import { clsx } from 'clsx'
+import { useIsMounted } from '@/hooks/use-is-mounted'
 
 type Props = {
   email: string
@@ -24,6 +25,8 @@ const ResendConfirmationEmailButton: FC<Props> = ({ email, className }) => {
 
   const alertConfigs = useResendConfirmationEmailAlertConfigs(state)
 
+  const isMounted = useIsMounted()
+
   return (
     <div className={clsx(styles.wrapper, className)}>
       <form action={formAction} className={styles.form}>
@@ -34,7 +37,9 @@ const ResendConfirmationEmailButton: FC<Props> = ({ email, className }) => {
           data-testid={'resend-confirmation-email-button'}
           type={'submit'}
           loading={isSubmitting}
-          disabled={isSubmitting || alertConfigs.some(({ preventsSubmit }) => preventsSubmit)}
+          disabled={
+            isSubmitting || (isMounted && alertConfigs.some(({ preventsSubmit }) => preventsSubmit))
+          }
         >
           Resend Confirmation
         </Button>

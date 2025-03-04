@@ -31,9 +31,7 @@ interface Props extends ComponentProps<'div'> {
 }
 
 const SetNewPasswordForm: FC<Props> = ({ email, passwordResetToken, ...rest }) => {
-  const initialState: SetNewPasswordState = {
-    fields: { email, password: '', passwordResetToken },
-  }
+  const initialState: SetNewPasswordState = { fields: { password: '', passwordResetToken } }
   const [state, formAction, isSubmitting] = useActionState<SetNewPasswordState, FormData>(
     setNewPasswordAction,
     initialState
@@ -89,21 +87,19 @@ const SetNewPasswordForm: FC<Props> = ({ email, passwordResetToken, ...rest }) =
         <input type={'hidden'} value={passwordResetToken} {...register('passwordResetToken')} />
 
         <Input
-          data-testid={'email-field'}
           type={'email'}
           label={'Email'}
           id={'email'}
-          defaultValue={state.fields.email}
+          defaultValue={email}
           placeholder={'Your email'}
           disabled={true}
           autoComplete={'email'}
-          error={validationErrors?.email ? validationErrors.email[0] : undefined}
-          {...register('email')}
+          inputDataTestId={'email-field'}
+          errorDataTestId={'email-error'}
         />
 
         <Input
           className={styles.formField}
-          data-testid={'password-field'}
           type={'password'}
           label={'New password'}
           id={'password'}
@@ -112,6 +108,8 @@ const SetNewPasswordForm: FC<Props> = ({ email, passwordResetToken, ...rest }) =
           disabled={isSubmitting}
           autoComplete={'new-password'}
           error={validationErrors?.password ? validationErrors.password[0] : undefined}
+          inputDataTestId={'password-field'}
+          errorDataTestId={'password-error'}
           {...register('password')}
         />
 

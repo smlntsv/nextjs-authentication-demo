@@ -22,8 +22,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Alert } from '@/components/alert'
-import styles from './password-reset-form.module.css'
 import { usePasswordResetFormAlertConfigs } from './use-password-reset-form-alert-configs'
+import { useIsMounted } from '@/hooks/use-is-mounted'
+import styles from './password-reset-form.module.css'
 
 const PasswordResetForm: FC<ComponentProps<'div'>> = (props) => {
   const initialState: RequestPasswordResetLinkState = { fields: { email: '', redirect: 'true' } }
@@ -31,6 +32,8 @@ const PasswordResetForm: FC<ComponentProps<'div'>> = (props) => {
     requestPasswordResetLinkAction,
     initialState
   )
+
+  const isMounted = useIsMounted()
 
   const alertConfigs = usePasswordResetFormAlertConfigs(state)
 
@@ -79,7 +82,6 @@ const PasswordResetForm: FC<ComponentProps<'div'>> = (props) => {
       >
         {/* Email */}
         <Input
-          data-testid={'email-field'}
           type={'email'}
           label={'Email'}
           defaultValue={state.fields.email}
@@ -87,6 +89,8 @@ const PasswordResetForm: FC<ComponentProps<'div'>> = (props) => {
           disabled={isSubmitting}
           autoComplete={'email'}
           error={validationErrors?.email ? validationErrors.email[0] : undefined}
+          inputDataTestId={'email-field'}
+          errorDataTestId={'email-error'}
           {...register('email')}
         />
 
@@ -103,7 +107,9 @@ const PasswordResetForm: FC<ComponentProps<'div'>> = (props) => {
           type={'submit'}
           size={'lg'}
           loading={isSubmitting}
-          disabled={isSubmitting || alertConfigs.some(({ preventsSubmit }) => preventsSubmit)}
+          disabled={
+            isSubmitting || (isMounted && alertConfigs.some(({ preventsSubmit }) => preventsSubmit))
+          }
           data-testid={'reset-password-button'}
         >
           Reset Password

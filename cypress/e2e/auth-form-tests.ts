@@ -141,7 +141,10 @@ function testFormSubmissionWithNoInternetConnection(pathname: string) {
       cy.goOffline()
 
       attemptAuthentication('test@test.com', 'Password-123')
-      cy.contains('It looks like there is a problems with Internet connection')
+
+      cy.contains('Network error')
+      cy.contains('Connection Issue Detected')
+      cy.contains('It seems there is a problem with your internet connection.')
 
       cy.getByDataId('try-again-button').should('exist')
     })

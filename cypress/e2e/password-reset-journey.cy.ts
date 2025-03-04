@@ -42,14 +42,14 @@ describe('Password Reset Journey', () => {
 
       // Render Password Reset Page
       it('should render password reset page', () => {
-        cy.contains('Password Reset')
+        cy.contains('Forgot Password?')
         cy.getByDataId('email-field').should('exist')
         cy.getByDataId('reset-password-button').should('exist')
       })
 
       // Form Submission with Empty Email Field
       it('should display error when submitting empty form field', () => {
-        cy.getByDataId('reset-password-button').click()
+        clickResetPasswordButton()
 
         assertEmailErrorMessage('Email is required')
       })
@@ -117,10 +117,11 @@ describe('Password Reset Journey', () => {
         ensureOnConfirmationPage(email)
 
         clickResendPasswordResetButton()
-        cy.contains('Password reset link was sent again!')
-
-        clickResendPasswordResetButton()
         ensureRateLimited()
+
+        cy.wait(60 * 1000)
+        clickResendPasswordResetButton()
+        cy.contains('Password reset link was sent again.')
       })
 
       context('Successful Flow', () => {
@@ -145,7 +146,7 @@ describe('Password Reset Journey', () => {
         // Invalid Token Handling
         it('should display an error for invalid or expired token on password reset page', () => {
           visit(`/auth/password-reset/wrong-or-expired-password-reset-token`)
-          cy.contains('Password Reset Link is Invalid or Expired')
+          cy.contains('Invalid or Expired Link')
         })
 
         // Email Confirmation Link
@@ -155,7 +156,7 @@ describe('Password Reset Journey', () => {
               const htmlBody = result as string | null
               expect(htmlBody).not.equal(null)
               expect(htmlBody).contains('We received a request to reset your password.')
-              expect(htmlBody).contains('Set new password')
+              expect(htmlBody).contains('Set New Password')
               const matchResult = htmlBody!.match(
                 /<a href="([\w:\/-]+\/auth\/password-reset\/[\w:\/-]+)"/
               )
@@ -168,7 +169,7 @@ describe('Password Reset Journey', () => {
         it('should render password reset page if token is valid', () => {
           expect(setNewPasswordUrl).not.to.be.an('undefined')
           visit(setNewPasswordUrl!)
-          cy.contains('Set new password')
+          cy.contains('Set New Password')
         })
 
         // Reject empty password
@@ -297,7 +298,7 @@ function attemptPasswordReset(email: string, wait: boolean = false) {
     cy.intercept('POST', /\/auth\/password-reset/).as('requestPasswordReset')
   }
 
-  cy.getByDataId('reset-password-button').click()
+  clickResetPasswordButton()
 
   if (wait) {
     cy.wait('@requestPasswordReset')
@@ -316,7 +317,7 @@ function attemptSetNewPassword(password: string, url: string, wait: boolean = fa
     cy.intercept('POST', url).as('setNewPasswordRequest')
   }
 
-  clickResetPasswordButton()
+  clickSetNewPasswordButton()
 
   if (wait) {
     cy.wait('@setNewPasswordRequest')
@@ -330,6 +331,10 @@ function fillPasswordField(password: string) {
 
 function clickResetPasswordButton() {
   cy.getByDataId('reset-password-button').click()
+}
+
+function clickSetNewPasswordButton() {
+  cy.getByDataId('set-new-password-button').click()
 }
 
 function assertPasswordErrorMessage(message: string) {

@@ -5,6 +5,7 @@ import { clsx } from 'clsx'
 import { IconCheck } from '@/components/icons/icon-check'
 import { AnimatePresence, motion, MotionProps } from 'motion/react'
 import styles from './alert.module.css'
+import { useIsMounted } from '@/hooks/use-is-mounted'
 
 type AlertType = 'success' | 'warning' | 'error'
 
@@ -42,11 +43,13 @@ type AuthFormErrorProps = ComponentPropsWithRef<'div'> &
 const Alert: FC<AuthFormErrorProps> = ({ ref, type = 'success', text, className, ...rest }) => {
   const Icon = iconsMap[type]
 
+  const isMounted = useIsMounted()
+
   return (
     <AnimatePresence mode={'popLayout'}>
       {text && (
         <motion.div
-          initial={{ y: -20, opacity: 0 }}
+          initial={isMounted ? { y: -20, opacity: 0 } : {}}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -20, opacity: 0 }}
           transition={{ duration: 0.25 }}

@@ -105,8 +105,8 @@ describe('Sign In Journey', () => {
         attemptAuthentication(email, password + 'wrong')
 
         cy.get('body').then(($form) => {
-          if ($form.find('[data-testid="auth-form-rate-limiter-message"').length) {
-            cy.getByDataId('auth-form-rate-limiter-message')
+          if ($form.find('[data-testid="auth-form-rate-limiter-warning"').length) {
+            cy.getByDataId('auth-form-rate-limiter-warning')
               .invoke('text')
               .then((text) => {
                 const match = text.match(/Please wait (\d+) seconds/)
@@ -124,7 +124,7 @@ describe('Sign In Journey', () => {
         assertPasswordErrorMessage('Wrong password')
 
         attemptAuthentication(email, password + 'wrong')
-        cy.getByDataId('auth-form-rate-limiter-message').contains(
+        cy.getByDataId('auth-form-rate-limiter-warning').contains(
           /Too many attempts. Please wait \d+ seconds./
         )
       })

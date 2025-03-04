@@ -1,23 +1,41 @@
 import { AuthForm } from '@/components/auth-form'
 import { signUpAction } from '@/lib/auth/actions/sign-up-action'
-import Link from 'next/link'
+import { Container } from '@/components/ui/container'
+import { Card, CardHeading } from '@/components/card'
+import { IconKey } from '@/components/icons/icon-key'
+import { CardText } from '@/components/card'
+import { Text } from '@/components/ui/typography/text'
+import { LinkButton } from '@/components/ui/button'
+import styles from '@/app/auth/sign-in/page.module.css'
 
 const SignUpPage = () => {
   return (
-    <>
-      <h1>Create an account</h1>
-      <AuthForm
-        action={signUpAction}
-        submitButtonText={'Get Started'}
-        passwordAutocomplete={'new-password'}
-      />
-      <div>
-        <Link href={'/auth/sign-in'}>Sign In</Link>
-      </div>
-      <div>
-        <Link href={'/auth/password-reset'}>Reset Password</Link>
-      </div>
-    </>
+    <Container centered>
+      <Card icon={<IconKey />}>
+        <CardHeading>Create an account</CardHeading>
+        <CardText>Fill in your details to sign up.</CardText>
+
+        <AuthForm
+          className={styles.form}
+          action={signUpAction}
+          submitButtonText={'Get Started'}
+          passwordAutocomplete={'new-password'}
+        />
+
+        <div className={styles.bottomLinks}>
+          <Text size={'sm'} className={styles.bottomLinksText}>
+            Already have an account?{' '}
+            <LinkButton href={'/auth/sign-in'} variant={'linkColor'}>
+              Log in
+            </LinkButton>
+          </Text>
+
+          <LinkButton href={'/auth/password-reset'} variant={'linkColor'}>
+            Forgot password
+          </LinkButton>
+        </div>
+      </Card>
+    </Container>
   )
 }
 

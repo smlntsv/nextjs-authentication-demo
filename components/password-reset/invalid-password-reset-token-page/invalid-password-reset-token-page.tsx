@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Container } from '@/components/ui/container'
-import { Card, CardHeading, CardText } from '@/components/card/card'
+import { Card, CardHeading, CardText } from '@/components/card'
 import { IconKeyOff } from '@/components/icons/icon-key-off'
 import { LinkButton } from '@/components/ui/button'
 import styles from './invalid-password-reset-token-page.module.css'

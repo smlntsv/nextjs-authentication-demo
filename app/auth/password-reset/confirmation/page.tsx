@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Container } from '@/components/ui/container'
-import { Card, CardHeading, CardText } from '@/components/card/card'
+import { Card, CardHeading, CardText } from '@/components/card'
 import { IconMail } from '@/components/icons/icon-mail'
 import { ResendPasswordResetButton } from '@/components/password-reset/resend-password-reset-button'
 import styles from './page.module.css'

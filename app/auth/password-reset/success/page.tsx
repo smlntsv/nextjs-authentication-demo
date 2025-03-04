@@ -1,12 +1,12 @@
 import { LinkButton } from '@/components/ui/button'
 import { Container } from '@/components/ui/container'
-import { Card, CardHeading, CardText } from '@/components/card/card'
-import { IconKey } from '@/components/icons/icon-key'
+import { Card, CardHeading, CardText } from '@/components/card'
+import { IconCheck } from '@/components/icons/icon-check'
 import styles from './page.module.css'
 
 const PasswordResetSuccessPage = () => (
   <Container centered>
-    <Card icon={<IconKey />}>
+    <Card icon={<IconCheck className={styles.icon} />}>
       <CardHeading>Password Updated</CardHeading>
       <CardText>
         Your password has been successfully updated.

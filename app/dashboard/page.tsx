@@ -1,7 +1,7 @@
 import { SignOutButton } from '@/components/sign-out-button'
 import { getAuthenticatedUser } from '@/lib/auth/session'
 import { IconUser } from '@/components/icons/icon-user'
-import { Card, CardHeading, CardText } from '@/components/card/card'
+import { Card, CardHeading, CardText } from '@/components/card'
 import styles from './page.module.css'
 import { Container } from '@/components/ui/container'
 

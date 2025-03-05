@@ -10,6 +10,8 @@ interface LinkButtonProps extends ComponentPropsWithRef<typeof Link> {
   size?: ButtonSize
   loading?: boolean
   leadingIcon?: ReactNode
+  trailingIcon?: ReactNode
+  className?: string
 }
 
 const LinkButton: FC<LinkButtonProps> = ({
@@ -18,17 +20,20 @@ const LinkButton: FC<LinkButtonProps> = ({
   size = 'md',
   loading = false,
   leadingIcon = null,
+  trailingIcon = null,
+  className,
   children,
   ...rest
 }) => {
   return (
     <Link
       ref={ref}
-      className={clsx(styles.base, buttonSizeMap[size], buttonVariantMap[variant])}
+      className={clsx(styles.base, buttonSizeMap[size], buttonVariantMap[variant], className)}
       {...rest}
     >
       {loading ? <IconLoading /> : leadingIcon}
       {children}
+      {trailingIcon}
     </Link>
   )
 }

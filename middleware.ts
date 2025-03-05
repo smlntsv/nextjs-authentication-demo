@@ -8,6 +8,10 @@ const requiresEmailQueryParamRoutes = [
   '/auth/password-reset/confirmation',
   '/auth/password-reset/success',
 ]
+const storybookStaticRedirect = {
+  from: '/storybook-static',
+  to: '/storybook-static/index.html',
+}
 
 export async function middleware(request: NextRequest) {
   const isUserAuthenticated = await isUserSessionValid(request)
@@ -35,8 +39,13 @@ export async function middleware(request: NextRequest) {
   if (nextPathname.startsWith('/dev') && isProduction) {
     return NextResponse.rewrite(new URL('/not-found', request.url))
   }
+
+  // Redirect to Storybook's index file
+  if (nextPathname === storybookStaticRedirect.from) {
+    return NextResponse.redirect(new URL(storybookStaticRedirect.to, request.url))
+  }
 }
 
 export const config = {
-  matcher: ['/auth/:path*', '/dashboard/:path*'],
+  matcher: ['/auth/:path*', '/dashboard/:path*', storybookStaticRedirect.from],
 } satisfies MiddlewareConfig

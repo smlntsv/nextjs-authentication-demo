@@ -1,0 +1,12 @@
+.git
+.idea
+.next
+db
+docs
+node_modules
+storybook-static
+.dockerignore
+.env*
+!.env.production
+Dockerfile
+release.sh

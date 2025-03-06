@@ -12,7 +12,6 @@ A demo project showcasing email/password-based authentication flow build with Ne
    - [Database Setup](#database-setup)
    - [Configuration](#configuration)
    - [Running the App](#running-the-app)
-- [Storybook](#storybook)
 - [Docker Support](#docker-support)
 - [Deployed Project](#deployed-project)
 - [License](#license)
@@ -118,6 +117,10 @@ This project includes `Dockerfile` and `release.sh` script to simplify building 
    ./release.sh
    ```
 
-## Deployed Project Link
+## Deployed Project
 
 You can view the deployed version of this project here: [nextjs-authentication-demo.portfolio.com](https://nextjs-authentication-demo.portfolio.com)
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).

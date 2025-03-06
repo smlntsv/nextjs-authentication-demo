@@ -40,17 +40,28 @@ const preview: Preview = {
       // Fix for https://github.com/storybookjs/storybook/issues/13323
       if (context.viewMode === 'docs') {
         let currentElement = context.canvasElement
+        let withinCanvas = false
+        let sbStoryElement: HTMLElement | null = null
 
         while (currentElement.tagName !== 'BODY' && currentElement?.parentElement) {
+          // Canvas
           if (currentElement.classList.contains('docs-story')) {
             currentElement.style.background = currentBackgroundColor
+            withinCanvas = true
           }
 
+          // Story
           if (currentElement.classList.contains('sb-story')) {
-            currentElement.style.background = currentBackgroundColor
+            sbStoryElement = currentElement
           }
 
           currentElement = currentElement.parentElement
+        }
+
+        // Apply padding only if Story used without Canvas
+        if (sbStoryElement && !withinCanvas) {
+          sbStoryElement.style.background = currentBackgroundColor
+          sbStoryElement.style.padding = '20px 30px'
         }
 
         return story()

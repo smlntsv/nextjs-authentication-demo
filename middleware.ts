@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse, MiddlewareConfig } from 'next/server'
 import { isUserSessionValid } from '@/lib/auth/session'
 
-const isProduction = process.env.NODE_ENV === 'production'
 const protectedRoutes = ['/dashboard']
 const requiresEmailQueryParamRoutes = [
   '/auth/sign-up/confirmation-awaiting',
@@ -35,11 +34,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.rewrite(new URL('/not-found', request.url))
   }
 
-  // Block access to dev-only routes (like email templates preview) in production
-  if (nextPathname.startsWith('/dev') && isProduction) {
-    return NextResponse.rewrite(new URL('/not-found', request.url))
-  }
-
   // Redirect to Storybook's index file
   if (nextPathname === storybookStaticRedirect.from) {
     return NextResponse.redirect(new URL(storybookStaticRedirect.to, request.url))
@@ -47,5 +41,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/auth/:path*', '/dashboard/:path*', storybookStaticRedirect.from],
+  matcher: ['/auth/:path*', '/dashboard/:path*', '/storybook-static'],
 } satisfies MiddlewareConfig

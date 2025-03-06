@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Authentication Demo
+
+A demo project showcasing email/password-based authentication flow build with Next.js. This project implements registration, sign-in, and password reset functionalities complete with email notifications. It uses React Server Components, Server Functions, and more to remain fully operational even with JavaScript disabled.
+
+## Table of Contents
+
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+   - [Prerequisites](#prerequisites)
+   - [Installation](#installation)
+   - [Database Setup](#database-setup)
+   - [Configuration](#configuration)
+   - [Running the App](#running-the-app)
+- [Storybook](#storybook)
+- [Docker Support](#docker-support)
+- [Deployed Project](#deployed-project)
+- [License](#license)
+
+## Features
+
+- **JavaScript Independence**: Fully functional when JavaScript is disabled.
+- **Authentication Flows**: Supports Sign Up, Sign In, and Password Reset.
+- **Email Notification**: Provides email confirmation, password reset, and update notifications.
+- **Theming Support**: Offers System, Dark, and Light themes, with automatic preference detection via `prefer-color-scheme` when JavaScript is disabled.
+- **Storybook Integration**: Includes stories for main components and email templates.
+- **Testing**: End-to-end tests are run with Cypress and unit tests with Vitest.
+
+## Technologies Used
+- Next.js
+- React
+- TypeScript
+- PostgreSQL (via Vercel's Neon)
+- Cypress
+- Vitest
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Ensure you have the following installed:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [Git](https://git-scm.com/downloads)
+- [Node.js 18.18 or later](https://nodejs.org/en)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Clone the Repository**
 
-## Learn More
+    ```bash
+    git clone https://github.com/username/nextjs-aithentication-demo.git
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+- **Navigate to the Project Directory and Install Dependencies**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    ```bash
+    cd nextjs-aithentication-demo && npm i
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Database Setup
 
-## Deploy on Vercel
+- **Create and apply database schema**:
+  Follow these steps to set up your managed database using Vercel's Neon:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  1. Navigate to https://vercel.com, go to **Storage**, and select **Create Database**.
+  2. Choose **"Neon" (Serverless Postgres)** and follow the setup instructions.
+  3. Once created, copy and securely store the `DATABASE_URL` from your new database - it will be needed during environment variables configuration. You will replace `POSTGRES_URL` with this value.
+  4. Click on the **Open in Neon** button on the database page, navigate to the **SQL Editor**, paste the content of `db/schema.sql` file into the query editor and click **Run**. Verify that the query completed successfully.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Configuration
+
+- **Set Up Environment Variables**
+
+   Copy the example environment file and customize it:
+
+    ```bash
+    cp .env.example .env.development.local
+    ```
+
+   Then, open `.env.development.local` and update the necessary values:
+   - Replace `POSTGRES_URL` value with the `DATABASE_URL` value you obtained from your Neon database.
+   - For Mailer Configuration, create an account on [Mailtrap](https://mailtrap.io) and update `SMTP_USERNAME` and `SMTP_PASSWORD` as needed (all other mail settings should already be set).
+   - For E2E tests, you need to provide values for `MAILTRAP_API_TOKEN`, `MAILTRAP_TEST_INBOX_ID`, and `MAILTRAP_ACCOUNT_ID`.
+
+### Running the App
+
+- **Start the Next.js Development Server**
+
+    ```bash
+    npm run dev
+    ```
+
+    > By default, the app will run at [http://localhost:3000](http://localhost:3000)
+
+- **Start the Storybook Development Server**
+
+    ```bash
+   npm run storybook 
+   ```
+
+   > By default, it will run at [http://localhost:6006](http://localhost:6006)
+
+## Docker Support
+
+This project includes `Dockerfile` and `release.sh` script to simplify building and deploying Docker images. The `release.sh` script automates the process of building the Docker image and pushing it to a specified Docker registry.
+
+### Usage
+
+- **Set the Docker Registry**
+
+   Ensure the `DOCKER_REGISTRY` environment variable is set to your desired Docker registry.
+
+- **Build and Push the Docker Image**
+
+   Run the following command to build the image and push it to your registry.
+
+- ```bash
+   ./release.sh
+   ```
+
+## Deployed Project Link
+
+You can view the deployed version of this project here: [nextjs-authentication-demo.portfolio.com](https://nextjs-authentication-demo.portfolio.com)

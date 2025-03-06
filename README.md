@@ -119,7 +119,7 @@ This project includes `Dockerfile` and `release.sh` script to simplify building 
 
 ## Deployed Project
 
-You can view the deployed version of this project here: [nextjs-authentication-demo.portfolio.com](https://nextjs-authentication-demo.portfolio.com)
+You can view the deployed version of this project here: [https://nextjs-authentication-demo.dima-dev.com/](https://https://nextjs-authentication-demo.dima-dev.com/)
 
 ## License
 

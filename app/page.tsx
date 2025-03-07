@@ -6,37 +6,54 @@ import { LinkButton } from '@/components/ui/button'
 import { IconArrowRight } from '@/components/icons/icon-arrow-right'
 import { IconCheck } from '@/components/icons/icon-check'
 
-const navigationLinks = [
+type NavigationLink = {
+  href: string
+  label: string
+  description: string
+  openInNewTab: boolean
+}
+
+const navigationLinks: NavigationLink[] = [
   {
     href: '/auth/sign-up',
     label: 'Sign Up',
     description:
       'Create a new account. If already signed in, you will be redirected to the dashboard.',
+    openInNewTab: false,
   },
   {
     href: '/auth/sign-in',
     label: 'Sign In',
     description:
       'Sign in to your account. Authenticated users are automatically redirected to the dashboard.',
+    openInNewTab: false,
   },
   {
     href: '/auth/password-reset',
     label: 'Password Reset',
     description: 'Forget your password? Start here to reset your credentials and regain access.',
+    openInNewTab: false,
   },
   {
     href: '/dashboard',
     label: 'Dashboard',
     description: `Protected route: You must be authenticated to access this page.`,
+    openInNewTab: false,
   },
   {
     href: '/storybook-static',
     label: 'Storybook',
     description: 'View interactive stories for the main components and email templates.',
+    openInNewTab: true,
   },
 ]
 
-const highlights = [
+type Highlight = {
+  title: string
+  description: string
+}
+
+const highlights: Highlight[] = [
   {
     title: 'JavaScript Independence',
     description: 'Fully functional even when JavaScript is disabled.',
@@ -60,7 +77,7 @@ const highlights = [
   },
   {
     title: 'Testing',
-    description: 'Testing: End-to-end tests with Cypress and unit tests with Vitest.',
+    description: 'End-to-end tests with Cypress and unit tests with Vitest.',
   },
 ]
 
@@ -86,7 +103,7 @@ export default function Home() {
           <Text className={styles.subheadingText}>Explore key features of this project:</Text>
 
           <ul className={styles.featuresList}>
-            {highlights.map(({ title, description }, idx) => (
+            {highlights.map(({ title, description }: Highlight, idx) => (
               <li key={idx}>
                 <IconCheck />
                 <Text>
@@ -107,9 +124,10 @@ export default function Home() {
           </Text>
 
           <ul className={styles.linksList}>
-            {navigationLinks.map(({ href, label, description }) => (
+            {navigationLinks.map(({ href, label, description, openInNewTab }: NavigationLink) => (
               <li key={href}>
                 <LinkButton
+                  target={openInNewTab ? '_blank' : '_self'}
                   trailingIcon={<IconArrowRight />}
                   size={'2xl'}
                   variant={'linkColor'}
@@ -133,6 +151,7 @@ export default function Home() {
             <Text className={styles.subheadingText}>
               This project available on{' '}
               <LinkButton
+                target={'_blank'}
                 size={'lg'}
                 variant={'linkColor'}
                 href={'https://github.com/smlntsv/nextjs-authentication-demo'}
@@ -142,11 +161,17 @@ export default function Home() {
               .
             </Text>
             <Text>
-              <LinkButton size={'lg'} variant={'linkColor'} href={'https://dima-dev.com'}>
+              <LinkButton
+                target={'_blank'}
+                size={'lg'}
+                variant={'linkColor'}
+                href={'https://dima-dev.com'}
+              >
                 My Portfolio Website.
               </LinkButton>
             </Text>
             <LinkButton
+              target={'_blank'}
               size={'lg'}
               variant={'linkColor'}
               href={'https://www.linkedin.com/in/dima-dev'}

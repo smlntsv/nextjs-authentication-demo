@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: 'An example implementation of an authentication flow using React Server Functions.',
 }
 
+// If removed it produce https://nextjs.org/docs/messages/dynamic-server-error during build
+export const dynamic = 'force-dynamic'
+
 const DashboardPage = async () => {
   const user = await getAuthenticatedUser()
 

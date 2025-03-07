@@ -11,8 +11,7 @@ async function isUserRegisteredByEmail(email: string): Promise<boolean> {
     const queryResult = await sql`SELECT id FROM users WHERE email = ${email};`
     return queryResult.rows.length > 0
   } catch (error) {
-    console.error('Error checking user registration: ', error)
-    throw new Error('Unable to check user registration status.')
+    throw new Error('Failed to check user registration status: ' + (error as Error).message)
   }
 }
 
@@ -28,8 +27,7 @@ async function isUserPasswordValid(email: string, password: string): Promise<boo
 
     return verifyUserPassword(password, hashedPassword)
   } catch (error) {
-    console.error('Unable to validate user password: ', error)
-    throw new Error('Unable to validate user password.')
+    throw new Error('Failed to validate user password: ' + (error as Error).message)
   }
 }
 
@@ -38,8 +36,9 @@ async function isPendingUserExistsByEmail(email: string): Promise<boolean> {
     const queryResult = await sql`SELECT email FROM pending_users WHERE email = ${email};`
     return queryResult.rows.length > 0
   } catch (error) {
-    console.error('Error checking email existence in pending_users: ', error)
-    throw new Error('Failed to verify if email exists in pending_users.')
+    throw new Error(
+      'Failed to verify if email exists in pending_users: ' + (error as Error).message
+    )
   }
 }
 
@@ -92,8 +91,9 @@ async function upsertPendingUserRecord(
         ON CONFLICT (email)
         DO UPDATE SET password = EXCLUDED.password, token = EXCLUDED.token, expires_at = EXCLUDED.expires_at, updated_at = NOW();`
   } catch (error) {
-    console.error('Unable to create/update user record in pending_users table: ', error)
-    throw new Error('Unable to create user record in pending_users table.')
+    throw new Error(
+      'Failed to create/update user record in pending_users table: ' + (error as Error).message
+    )
   }
 }
 
@@ -110,8 +110,7 @@ async function updatePendingUserTokenByEmail(email: string, hashedToken: string)
 
     updated = queryResult.rows.length !== 0
   } catch (error) {
-    console.error('Unable to update token of pending_users table: ', error)
-    throw new Error('Unable to update token of pending_users table.')
+    throw new Error('Failed to update token of pending_users table: ' + (error as Error).message)
   }
 
   if (!updated) {
@@ -128,8 +127,7 @@ async function isEmailConfirmationTokenValid(plainToken: string): Promise<boolea
 
     return queryResult.rows.length > 0
   } catch (error) {
-    console.error('Unable to verify email confirmation token: ', error)
-    throw new Error('Unable to verify email confirmation token.')
+    throw new Error('Failed to verify email confirmation token: ' + (error as Error).message)
   }
 }
 
@@ -215,8 +213,7 @@ async function getUserByEmail(email: string): Promise<User | null> {
       updatedAt: userQueryResult.rows[0].updated_at,
     } satisfies User
   } catch (error) {
-    console.error('Unable to get user by email: ', (error as Error).message)
-    throw new Error('Unable to get user by email')
+    throw new Error('Failed to get user by email: ' + (error as Error).message)
   }
 }
 
@@ -237,8 +234,7 @@ async function getUserById(userId: string): Promise<User | null> {
       updatedAt: userQueryResult.rows[0].updated_at,
     } satisfies User
   } catch (error) {
-    console.error('Unable to get user by id: ', (error as Error).message)
-    throw new Error('Unable to get user by id')
+    throw new Error('Failed to get user by id: ' + (error as Error).message)
   }
 }
 
@@ -299,8 +295,7 @@ async function getUserEmailByPasswordResetToken(token: string): Promise<string |
 
     return queryResult.rows[0].email
   } catch (error) {
-    console.error('Unable to get user email by password reset token: ', error)
-    throw new Error('Failed to get user email by password reset token.')
+    throw new Error('Failed to get user email by password reset token: ' + (error as Error).message)
   }
 }
 
@@ -327,8 +322,7 @@ async function getPasswordResetRecord(token: string): Promise<PasswordReset | nu
       updatedAt: queryResult.rows[0].updated_at,
     } as PasswordReset
   } catch (error) {
-    console.error('Failed to get password reset record: ', error)
-    throw new Error('Failed to get password reset record')
+    throw new Error('Failed to get password reset record:' + (error as Error).message)
   }
 }
 
@@ -347,8 +341,7 @@ async function markPasswordResetTokenAsUsed(token: string): Promise<void> {
 
     isUpdated = queryResult.rows.length > 0
   } catch (error) {
-    console.error((error as Error).message)
-    throw new Error('Failed to mark password reset token as used.')
+    throw new Error('Failed to mark password reset token as used: ' + (error as Error).message)
   }
 
   if (!isUpdated) {
@@ -365,8 +358,7 @@ async function updateUserPassword(userId: User['id'], newPassword: string): Prom
 
     return queryResult.rows.length > 0
   } catch (error) {
-    console.error('Failed to update user password: ', error)
-    throw new Error('Failed to update user password.')
+    throw new Error('Failed to update user password: ' + (error as Error).message)
   }
 }
 

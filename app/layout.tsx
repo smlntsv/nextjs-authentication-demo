@@ -4,7 +4,6 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theming/theme-provider'
 import { ThemeSwitcher } from '@/components/theming/theme-switcher'
-import { ThemeSwitcherPositioner } from '@/components/theming/theme-switcher-positioner'
 import { JavaScriptDisabledNotification } from '@/components/java-script-disabled-notification'
 
 export const dynamic = 'force-dynamic'
@@ -28,9 +27,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <JavaScriptDisabledNotification />
-          <ThemeSwitcherPositioner>
-            <ThemeSwitcher />
-          </ThemeSwitcherPositioner>
+          <ThemeSwitcher />
           {children}
         </ThemeProvider>
       </body>

@@ -1,0 +1,50 @@
+/* TODO: refactor home-link and theme-switcher, possibly into separate component */
+
+.wrapper {
+  position: relative;
+}
+
+.base {
+  display: flex;
+  flex-shrink: 0;
+  width: fit-content;
+  border: 1px solid var(--color-border-primary);
+  color: var(--color-fg-tertiary);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-primary);
+  padding: var(--spacing-md);
+
+  position: absolute;
+  top: var(--spacing-2xl);
+  cursor: pointer;
+}
+
+.base:hover {
+  border-color: var(--color-border-brand);
+  background-color: var(--color-bg-active);
+}
+
+.homeButton {
+  left: var(--spacing-2xl);
+}
+
+.themeButton {
+  right: var(--spacing-2xl);
+}
+
+@media (max-width: 320px) {
+  .base {
+    top: var(--spacing-lg);
+  }
+
+  .homeButton {
+    left: var(--spacing-lg);
+  }
+
+  .themeButton {
+    right: var(--spacing-lg);
+  }
+}
+
+
+

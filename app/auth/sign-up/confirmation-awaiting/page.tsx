@@ -6,6 +6,13 @@ import { IconMail } from '@/components/icons/icon-mail'
 import styles from './page.module.css'
 import { IconArrowLeft } from '@/components/icons/icon-arrow-left'
 import { LinkButton } from '@/components/ui/button'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Check Your Email',
+  description:
+    'Check your inbox for the confirmation email sent after signing up. Resend the email if needed or return to sign in to complete your registration.',
+}
 
 // NOTE: Email query parameter check implemented in middleware.ts
 

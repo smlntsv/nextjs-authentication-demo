@@ -3,6 +3,12 @@ import { Container } from '@/components/ui/container'
 import { Card, CardHeading, CardText } from '@/components/card'
 import { IconCheck } from '@/components/icons/icon-check'
 import styles from './page.module.css'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Password Updated',
+  description: 'Your password has been successfully updated.',
+}
 
 const PasswordResetSuccessPage = () => (
   <Container centered>

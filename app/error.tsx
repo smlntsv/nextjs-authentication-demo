@@ -33,20 +33,26 @@ const Error: FC<Props> = ({ error, reset }) => {
     }
   }, [error])
 
+  useEffect(() => {
+    document.title = errorPageProps.subheading + ' - Next.js Authentication Demo'
+  }, [errorPageProps])
+
   return (
-    <ErrorPage
-      {...errorPageProps}
-      renderActionButtons={() => (
-        <>
-          <Button data-testid={'try-again-button'} onClick={reset} size={'xl'}>
-            Try Again
-          </Button>
-          <LinkButton variant={'secondaryGray'} href={'/'} size={'xl'}>
-            Take me home
-          </LinkButton>
-        </>
-      )}
-    />
+    <>
+      <ErrorPage
+        {...errorPageProps}
+        renderActionButtons={() => (
+          <>
+            <Button data-testid={'try-again-button'} onClick={reset} size={'xl'}>
+              Try Again
+            </Button>
+            <LinkButton variant={'secondaryGray'} href={'/'} size={'xl'}>
+              Take me home
+            </LinkButton>
+          </>
+        )}
+      />
+    </>
   )
 }
 

@@ -5,6 +5,12 @@ import { LinkButton } from '@/components/ui/button'
 import { IconArrowLeft } from '@/components/icons/icon-arrow-left'
 import { Card, CardHeading, CardText } from '@/components/card'
 import styles from './page.module.css'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Password Reset',
+  description: 'Reset your password by entering your email address.',
+}
 
 const PasswordResetPage = () => {
   return (

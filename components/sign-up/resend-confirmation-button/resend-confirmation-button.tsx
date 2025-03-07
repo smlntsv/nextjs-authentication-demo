@@ -7,7 +7,7 @@ import {
 } from '@/lib/auth/actions/resend-confirmation-email-action'
 import { Button } from '@/components/ui/button'
 import { Alert } from '@/components/alert'
-import { useResendConfirmationEmailAlertConfigs } from '@/components/sign-up/resend-confirmation-button/use-resend-confirmation-button-alert-configs'
+import { useResendConfirmationEmailAlertConfigs } from './use-resend-confirmation-button-alert-configs'
 import styles from '@/components/password-reset/resend-password-reset-button/resend-password-reset-button.module.css'
 import { clsx } from 'clsx'
 import { useIsMounted } from '@/hooks/use-is-mounted'

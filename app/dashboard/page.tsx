@@ -4,6 +4,12 @@ import { IconUser } from '@/components/icons/icon-user'
 import { Card, CardHeading, CardText } from '@/components/card'
 import styles from './page.module.css'
 import { Container } from '@/components/ui/container'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+  description: 'An example implementation of an authentication flow using React Server Functions.',
+}
 
 // If removed it produce https://nextjs.org/docs/messages/dynamic-server-error
 export const dynamic = 'force-dynamic'

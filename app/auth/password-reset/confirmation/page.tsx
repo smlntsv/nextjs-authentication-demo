@@ -6,6 +6,12 @@ import { ResendPasswordResetButton } from '@/components/password-reset/resend-pa
 import styles from './page.module.css'
 import { LinkButton } from '@/components/ui/button'
 import { IconArrowLeft } from '@/components/icons/icon-arrow-left'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Password Reset Requested',
+  description: 'Check your email for instructions to reset your password.',
+}
 
 type Props = {
   searchParams: Promise<Record<string, string>>

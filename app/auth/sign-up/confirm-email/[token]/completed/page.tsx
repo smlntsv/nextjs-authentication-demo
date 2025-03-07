@@ -3,7 +3,13 @@ import { Container } from '@/components/ui/container'
 import { LinkButton } from '@/components/ui/button'
 import { Card, CardHeading, CardText } from '@/components/card'
 import { IconCheck } from '@/components/icons/icon-check'
-import styles from './registration-complete-page.module.css'
+import styles from './../confirm-email.module.css'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Registration Complete',
+  description: 'Your email has been confirmed successfully!',
+}
 
 const RegistrationCompletePage: FC = () => (
   <Container centered>
@@ -11,11 +17,11 @@ const RegistrationCompletePage: FC = () => (
       <CardHeading>Registration Complete</CardHeading>
       <CardText>Your email has been confirmed successfully! You can now log in.</CardText>
 
-      <LinkButton className={styles.goToSignInButton} href="/auth/sign-in">
+      <LinkButton className={styles.button} href="/auth/sign-in">
         Go to Sign In
       </LinkButton>
     </Card>
   </Container>
 )
 
-export { RegistrationCompletePage }
+export default RegistrationCompletePage

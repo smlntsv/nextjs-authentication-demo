@@ -1,8 +1,11 @@
 import { FC } from 'react'
 import { completeSignUpProcess, isEmailConfirmationTokenValid } from '@/lib/auth/utils/auth-utils'
-import { RegistrationFailedPage } from '@/components/sign-up/registration-failed-page'
-import { RegistrationCompletePage } from '@/components/sign-up/registration-complete-page'
-import { InvalidConfirmationTokenPage } from '@/components/sign-up/invalid-confirmation-token-page'
+import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+  title: 'Confirm Email',
+}
 
 type Props = {
   params: Promise<{ token: string }>
@@ -10,20 +13,21 @@ type Props = {
 
 const ConfirmEmailPage: FC<Props> = async ({ params }) => {
   const token = (await params).token
+  const basePath = `/auth/sign-up/confirm-email/${token}`
 
   const isTokenValid = await isEmailConfirmationTokenValid(token)
 
   if (!isTokenValid) {
-    return <InvalidConfirmationTokenPage />
+    redirect(`${basePath}/invalid-token`)
   }
 
   const isComplete = await completeSignUpProcess(token)
 
   if (!isComplete) {
-    return <RegistrationFailedPage />
+    redirect(`${basePath}/failed`)
   }
 
-  return <RegistrationCompletePage />
+  redirect(`${basePath}/completed`)
 }
 
 export default ConfirmEmailPage

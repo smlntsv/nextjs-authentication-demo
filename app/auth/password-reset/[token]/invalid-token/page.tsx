@@ -3,7 +3,13 @@ import { Container } from '@/components/ui/container'
 import { Card, CardHeading, CardText } from '@/components/card'
 import { IconKeyOff } from '@/components/icons/icon-key-off'
 import { LinkButton } from '@/components/ui/button'
-import styles from './invalid-password-reset-token-page.module.css'
+import styles from './page.module.css'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Invalid or Expired Link',
+  description: 'This password reset link is no longer valid.',
+}
 
 const InvalidPasswordResetTokenPage: FC = () => (
   <Container centered>
@@ -19,4 +25,4 @@ const InvalidPasswordResetTokenPage: FC = () => (
   </Container>
 )
 
-export { InvalidPasswordResetTokenPage }
+export default InvalidPasswordResetTokenPage

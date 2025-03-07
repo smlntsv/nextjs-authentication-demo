@@ -7,6 +7,13 @@ import { CardText } from '@/components/card'
 import { Text } from '@/components/ui/typography/text'
 import { LinkButton } from '@/components/ui/button'
 import styles from '@/app/auth/sign-in/page.module.css'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Create an account',
+  description:
+    'Sign up to access our Next.js authentication demo. Fill in your details for a secure registration and get started with our email/password-based flows.',
+}
 
 const SignUpPage = () => {
   return (

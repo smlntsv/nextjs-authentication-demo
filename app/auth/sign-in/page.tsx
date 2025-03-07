@@ -6,6 +6,12 @@ import { LinkButton } from '@/components/ui/button'
 import { Card, CardHeading, CardText } from '@/components/card'
 import { IconKey } from '@/components/icons/icon-key'
 import styles from './page.module.css'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Log in to your account',
+  description: 'Access your account by signing in with your credentials.',
+}
 
 const SignInPage = () => {
   return (

@@ -1,6 +1,13 @@
 import { ErrorPage, ErrorPagePropsWithoutActions } from '@/components/error-page'
 import { LinkButton } from '@/components/ui/button'
 import { GoBackButton } from '@/components/go-back-button'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Page Not Found',
+  description:
+    'The page you are looking for does not exist. Please check the URL or return to the homepage.',
+}
 
 const notFoundErrorPageProps: ErrorPagePropsWithoutActions = {
   subheading: '404 error',

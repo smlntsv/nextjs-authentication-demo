@@ -120,7 +120,7 @@ describe('Sign Up Journey', () => {
             .then((result) => {
               const htmlBody = result as string | null
               const matchResult = htmlBody!.match(
-                /<a href="([\w:\/-]+\/auth\/sign-up\/confirm-email\/[\w:\/-]+)"/
+                /href="([\w:\/-]+\/auth\/sign-up\/confirm-email\/[\w:\/-]+)"/
               )
               return matchResult![1]
             })
@@ -150,7 +150,7 @@ describe('Sign Up Journey', () => {
           cy.task('email:getLastUnreadMessageTextByEmail', { email, markAsRead: true }).then(
             (result) => {
               const htmlBody = result as string | null
-              const matchResult = htmlBody!.match(/<a href="([\w:\/-]+\/auth\/sign-in)"/)
+              const matchResult = htmlBody!.match(/href="([\w:\/-]+\/auth\/sign-in)"/)
               expect(matchResult).not.equal(null)
 
               visit(matchResult![1])

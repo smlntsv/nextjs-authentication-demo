@@ -158,7 +158,7 @@ describe('Password Reset Journey', () => {
               expect(htmlBody).contains('We received a request to reset your password.')
               expect(htmlBody).contains('Set New Password')
               const matchResult = htmlBody!.match(
-                /<a href="([\w:\/-]+\/auth\/password-reset\/[\w:\/-]+)"/
+                /href="([\w:\/-]+\/auth\/password-reset\/[\w:\/-]+)"/
               )
               expect(matchResult).not.equal(null)
               setNewPasswordUrl = matchResult![1]
@@ -246,7 +246,7 @@ describe('Password Reset Journey', () => {
               expect(htmlBody).not.equal(null)
               expect(htmlBody).contains('Your password has been successfully updated.')
               expect(htmlBody).contains('Go to Login Page')
-              const matchResult = htmlBody!.match(/<a href="([\w:\/-]+\/auth\/sign-in)"/)
+              const matchResult = htmlBody!.match(/href="([\w:\/-]+\/auth\/sign-in)"/)
               expect(matchResult).not.equal(null)
               signInUrl = matchResult![1]
             }

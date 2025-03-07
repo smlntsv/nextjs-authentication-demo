@@ -6,8 +6,6 @@ import { ThemeProvider } from '@/components/theming/theme-provider'
 import { ThemeSwitcher } from '@/components/theming/theme-switcher'
 import { JavaScriptDisabledNotification } from '@/components/java-script-disabled-notification'
 
-export const dynamic = 'force-dynamic'
-
 const inter = Inter({
   subsets: ['latin'],
 })

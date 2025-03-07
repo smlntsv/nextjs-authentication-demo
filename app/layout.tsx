@@ -1,13 +1,14 @@
 import { ReactNode } from 'react'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import { ThemeProvider } from '@/components/theming/theme-provider'
 import { ThemeSwitcher } from '@/components/theming/theme-switcher'
 import { JavaScriptDisabledNotification } from '@/components/java-script-disabled-notification'
 
-const inter = Inter({
-  subsets: ['latin'],
+const inter = localFont({
+  src: './Inter-100-900-latin.woff2',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {

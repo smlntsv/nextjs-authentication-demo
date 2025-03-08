@@ -60,7 +60,16 @@ async function createSessionByEmail(email: string): Promise<boolean> {
     }
 
     const cookieStore = await cookies()
-    cookieStore.set(SESSION_COOKIE_NAME, token)
+
+    const expires = new Date()
+    expires.setDate(expires.getDate() + 30) // expire in 30 days
+
+    cookieStore.set(SESSION_COOKIE_NAME, token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      expires: expires.getTime(),
+    })
 
     return true
   } catch (error) {
